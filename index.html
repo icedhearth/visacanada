@@ -3,113 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulário IMM 5257 v3 | Visto Canadense</title>
+    <title>Formulário IMM 5257 (Completo) | Visto Canadense</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f4f7f6; margin: 0; padding: 15px; color: #333; }
-        .container { max-width: 800px; margin: 0 auto; background-color: #ffffff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h1, h2 { text-align: center; color: #2c3e50; margin-bottom: 20px;}
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; color: #333; }
+        .container { max-width: 850px; margin: 20px auto; background-color: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        h1, h2 { text-align: center; color: #1d3557; margin-bottom: 25px; }
         .form-section { display: none; }
         .form-section.active { display: block; animation: fadeIn 0.5s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .progress-bar { width: 100%; background-color: #e0e0e0; border-radius: 5px; margin-bottom: 25px; }
-        .progress-bar-fill { height: 10px; width: 0%; background-color: #d9534f; border-radius: 5px; transition: width 0.4s ease-in-out; }
-        .form-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 600; color: #555; }
-        input[type="text"], input[type="date"], input[type="email"], input[type="tel"], select, textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 16px; }
-        fieldset { border: 1px solid #ccc; border-radius: 4px; padding: 15px; margin-bottom: 20px; }
-        legend { font-weight: 600; color: #3498db; }
-        .radio-group label { display: inline-block; margin-right: 20px; font-weight: normal;}
-        .hidden-field { display: none; margin-top: 15px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .progress-bar { width: 100%; background-color: #e9ecef; border-radius: 5px; margin-bottom: 30px; overflow: hidden; }
+        .progress-bar-fill { height: 12px; width: 0%; background-color: #e63946; border-radius: 5px; transition: width 0.4s ease-in-out; }
+        .form-group { margin-bottom: 22px; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: #495057; }
+        input[type="text"], input[type="date"], input[type="email"], input[type="tel"], select, textarea { width: 100%; padding: 12px; border: 1px solid #ced4da; border-radius: 5px; box-sizing: border-box; font-size: 16px; transition: border-color 0.2s; }
+        input:focus, select:focus, textarea:focus { border-color: #e63946; outline: none; box-shadow: 0 0 5px rgba(230, 57, 70, 0.2); }
+        fieldset { border: 1px solid #dee2e6; border-radius: 5px; padding: 20px; margin-bottom: 20px; }
+        legend { font-weight: 700; color: #1d3557; padding: 0 10px; }
+        .radio-group label { display: inline-block; margin-right: 25px; font-weight: normal; }
+        .hidden-field { display: none; margin-top: 15px; border-left: 3px solid #e63946; padding-left: 15px; animation: fadeIn 0.5s; }
         .navigation-buttons { display: flex; justify-content: space-between; margin-top: 30px; }
-        button { padding: 12px 25px; border: none; border-radius: 5px; background-color: #d9534f; color: white; font-size: 16px; font-weight: bold; cursor: pointer; transition: background-color 0.2s; }
-        button:hover:not(:disabled) { background-color: #c9302c; }
-        button:disabled { background-color: #ccc; cursor: not-allowed; }
-        button#prevBtn { background-color: #95a5a6; }
-        button#prevBtn:hover { background-color: #7f8c8d; }
+        button { padding: 12px 28px; border: none; border-radius: 5px; background-color: #e63946; color: white; font-size: 16px; font-weight: bold; cursor: pointer; transition: all 0.2s; }
+        button:hover:not(:disabled) { background-color: #d62828; transform: translateY(-2px); }
+        button:disabled { background-color: #adb5bd; cursor: not-allowed; }
+        button#prevBtn { background-color: #6c757d; }
+        button#prevBtn:hover { background-color: #5a6268; }
         .declaration-box { border: 1px solid #ddd; padding: 15px; margin-top: 20px; background-color: #fafafa; font-size: 14px; max-height: 250px; overflow-y: auto; }
         .agreement-group { margin-top: 20px; display: flex; align-items: center; }
-        .agreement-group input[type="checkbox"] { width: auto; margin-right: 10px; }
+        .agreement-group input[type="checkbox"] { width: auto; margin-right: 10px; transform: scale(1.2); }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Formulário IMM 5257</h1>
+    <h1>Formulário de Visto Canadense (IMM 5257)</h1>
     <div class="progress-bar"><div class="progress-bar-fill" id="progressBar"></div></div>
 
     <form id="imm5257Form">
         <div class="form-section active">
-            <h2>Seção 1: Dados Pessoais</h2>
-            <div class="form-group"><label for="fullName">Nome Completo (como no passaporte)</label><input type="text" id="fullName" name="fullName" placeholder="SOBRENOME, Nome" required></div>
+            <h2>Dados Pessoais</h2>
+            <div class="form-group"><label for="fullName">Nome Completo (igual ao passaporte)</label><input type="text" id="fullName" name="fullName" required></div>
+            <div class="form-group"><label>Já usou outro nome (apelido, nome de solteira, etc.)?</label>
+                <div class="radio-group"><label><input type="radio" name="usedOtherName" value="Sim"> Sim</label><label><input type="radio" name="usedOtherName" value="Não" checked> Não</label></div>
+                <div id="otherNameField" class="hidden-field"><label for="otherName">Nome Adicional</label><input type="text" id="otherName" name="otherName"></div>
+            </div>
+            <div class="form-group"><label for="sex">Sexo</label><select id="sex" name="sex"><option value="Feminino">Feminino</option><option value="Masculino">Masculino</option><option value="Outro">Outro</option></select></div>
+            <div class="form-group"><label for="dob">Data de Nascimento</label><input type="date" id="dob" name="dob" required></div>
+            <div class="form-group"><label for="pob">Local de Nascimento (Cidade e País)</label><input type="text" id="pob" name="pob" required></div>
+            <div class="form-group"><label for="citizenship">Cidadania</label><input type="text" id="citizenship" name="citizenship" required></div>
+        </div>
+
+        <div class="form-section">
+            <h2>Residência</h2>
+            <fieldset>
+                <legend>Residência Atual</legend>
+                <div class="form-group"><label for="currentResidenceCountry">País/Território</label><input type="text" id="currentResidenceCountry" name="currentResidenceCountry" required></div>
+                <div class="form-group"><label for="currentResidenceStatus">Status</label><select id="currentResidenceStatus" name="currentResidenceStatus"><option>Cidadão</option><option>Residente Permanente</option><option>Trabalhador</option><option>Estudante</option><option>Visitante</option><option>Outro</option></select></div>
+            </fieldset>
+            <div class="form-group"><label>Viveu em outro país por mais de 6 meses nos últimos 5 anos?</label>
+                <div class="radio-group"><label><input type="radio" name="livedOtherCountry" value="Sim"> Sim</label><label><input type="radio" name="livedOtherCountry" value="Não" checked> Não</label></div>
+                <div id="previousResidenceField" class="hidden-field"><label for="previousResidenceDetails">Detalhes dos países anteriores</label><textarea name="previousResidenceDetails" placeholder="Liste cada país, status e período."></textarea></div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2>Estado Civil e Idioma</h2>
             <div class="form-group"><label for="maritalStatus">Estado Civil Atual</label>
                 <select id="maritalStatus" name="maritalStatus">
-                    <option value="Solteiro(a)">Solteiro(a)</option>
-                    <option value="Casado(a)">Casado(a)</option>
-                    <option value="União Estável">União Estável</option>
-                    <option value="Divorciado(a)">Divorciado(a)</option>
-                    <option value="Viúvo(a)">Viúvo(a)</option>
+                    <option value="Solteiro(a)">Solteiro(a)</option><option value="Casado(a)">Casado(a)</option><option value="União Estável">União Estável</option><option value="Divorciado(a)">Divorciado(a)</option><option value="Viúvo(a)">Viúvo(a)</option>
                 </select>
             </div>
-            <div id="spouseDetails" class="hidden-field">
-                <fieldset>
-                    <legend id="spouseLegend">Dados do Cônjuge / Companheiro(a)</legend>
-                    <div class="form-group"><label for="spouseFullName">Nome Completo do Cônjuge/Companheiro(a)</label><input type="text" id="spouseFullName" name="spouseFullName"></div>
-                    <div class="form-group"><label for="spouseDob">Data de Nascimento</label><input type="date" id="spouseDob" name="spouseDob"></div>
-                    <div id="relationshipDates" class="hidden-field">
-                         <div class="form-group"><label for="marriageDate">Data de Início do Casamento/União</label><input type="date" id="marriageDate" name="marriageDate"></div>
-                         <div class="form-group"><label for="separationDate">Data de Fim do Relacionamento</label><input type="date" id="separationDate" name="separationDate"></div>
-                    </div>
-                </fieldset>
-            </div>
+            <div id="spouseDetails" class="hidden-field"><fieldset><legend id="spouseLegend">Dados do Cônjuge</legend>
+                    <div class="form-group"><label for="spouseFullName">Nome Completo</label><input type="text" id="spouseFullName" name="spouseFullName"></div>
+                    <div id="relationshipDates"><div class="form-group"><label for="marriageDate">Data de Início do Casamento/União</label><input type="date" id="marriageDate" name="marriageDate"></div></div>
+            </fieldset></div>
+            <div class="form-group"><label for="nativeLanguage">Língua Nativa</label><input type="text" id="nativeLanguage" name="nativeLanguage"></div>
+            <div class="form-group"><label for="correspondenceLanguage">Idioma para correspondência</label><select id="correspondenceLanguage" name="correspondenceLanguage"><option>Inglês</option><option>Francês</option></select></div>
         </div>
 
         <div class="form-section">
-            <h2>Seção 2: Informações de Histórico</h2>
+            <h2>Passaporte e Documentos</h2>
+            <fieldset><legend>Passaporte</legend>
+                <div class="form-group"><label for="passportNumber">Número do Passaporte</label><input type="text" id="passportNumber" name="passportNumber" required></div>
+                <div class="form-group"><label for="passportCountry">País de Emissão</label><input type="text" id="passportCountry" name="passportCountry" required></div>
+                <div class="form-group"><label for="passportIssueDate">Data de Emissão</label><input type="date" id="passportIssueDate" name="passportIssueDate" required></div>
+                <div class="form-group"><label for="passportExpiryDate">Data de Validade</label><input type="date" id="passportExpiryDate" name="passportExpiryDate" required></div>
+            </fieldset>
+             <div class="form-group"><label>Possui Documento de Identidade Nacional?</label>
+                <div class="radio-group"><label><input type="radio" name="hasNationalId" value="Sim"> Sim</label><label><input type="radio" name="hasNationalId" value="Não" checked> Não</label></div>
+                <div id="nationalIdField" class="hidden-field"><label for="nationalIdNumber">Número do Documento</label><input type="text" id="nationalIdNumber" name="nationalIdNumber"></div>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h2>Informações de Contato</h2>
+            <div class="form-group"><label for="mailingAddress">Endereço de Correspondência</label><textarea id="mailingAddress" name="mailingAddress" required placeholder="Endereço completo com rua, número, bairro, CEP, cidade e país."></textarea></div>
+            <div class="form-group"><label for="phone">Telefone Celular</label><input type="tel" id="phone" name="phone" required></div>
+            <div class="form-group"><label for="email">E-mail</label><input type="email" id="email" name="email" required></div>
+        </div>
+
+        <div class="form-section">
+            <h2>Detalhes da Visita ao Canadá</h2>
+            <div class="form-group"><label for="purpose">Propósito da Visita</label><select id="purpose" name="purpose"><option>Turismo</option><option>Negócios</option><option>Visitar Família/Amigos</option></select></div>
+            <div class="form-group"><label for="stay_from">Data de Chegada</label><input type="date" id="stay_from" name="stay_from" required></div>
+            <div class="form-group"><label for="stay_to">Data de Saída</label><input type="date" id="stay_to" name="stay_to" required></div>
+            <div class="form-group"><label for="funds">Fundos disponíveis para a estadia (CAD)</label><input type="text" id="funds" name="funds" placeholder="Ex: 5000" required></div>
+            <div class="form-group"><label for="visit_person_details">Pessoas ou instituições que irá visitar (Nome, endereço, relação)</label><textarea id="visit_person_details" name="visit_person_details"></textarea></div>
+        </div>
+        
+        <div class="form-section">
+            <h2>Educação e Emprego</h2>
+            <div class="form-group"><label>Possui ensino superior ou técnico?</label>
+                <div class="radio-group"><label><input type="radio" name="hasEducation" value="Sim"> Sim</label><label><input type="radio" name="hasEducation" value="Não" checked> Não</label></div>
+                <div id="educationField" class="hidden-field"><label for="educationDetails">Detalhes da Educação</label><textarea name="educationDetails" placeholder="Liste curso, escola, cidade, período."></textarea></div>
+            </div>
+            <div class="form-group"><label for="employmentDetails">Histórico de Emprego (últimos 10 anos)</label><textarea id="employmentDetails" name="employmentDetails" placeholder="Liste cada emprego (período, cargo, empregador, cidade), começando pelo mais recente." required></textarea></div>
+        </div>
+
+        <div class="form-section">
+            <h2>Informações de Histórico</h2>
             <p>Responda "Sim" ou "Não" para as perguntas abaixo. Se responder "Sim", forneça detalhes.</p>
-            
-            <div class="form-group">
-                <label>1. Você ou algum familiar próximo já teve tuberculose?</label>
-                <div class="radio-group">
-                    <label><input type="radio" name="bg_q1" value="Sim"> Sim</label>
-                    <label><input type="radio" name="bg_q1" value="Não" checked> Não</label>
-                </div>
-                <textarea name="bg_q1_details" class="hidden-field" placeholder="Forneça detalhes sobre o diagnóstico e tratamento."></textarea>
+            <div class="form-group"><label>1. Você ou um familiar teve tuberculose nos últimos 2 anos?</label>
+                <div class="radio-group"><label><input type="radio" name="bg_q1" value="Sim"> Sim</label><label><input type="radio" name="bg_q1" value="Não" checked> Não</label></div>
+                <textarea name="bg_q1_details" class="hidden-field" placeholder="Forneça detalhes."></textarea>
             </div>
-            <div class="form-group">
-                <label>2. Você já teve um visto ou entrada recusada para o Canadá ou qualquer outro país?</label>
-                <div class="radio-group">
-                    <label><input type="radio" name="bg_q2" value="Sim"> Sim</label>
-                    <label><input type="radio" name="bg_q2" value="Não" checked> Não</label>
-                </div>
-                <textarea name="bg_q2_details" class="hidden-field" placeholder="Forneça detalhes: qual país, quando e o motivo da recusa."></textarea>
+             <div class="form-group"><label>2. Já teve um visto ou entrada recusada para o Canadá ou outro país?</label>
+                <div class="radio-group"><label><input type="radio" name="bg_q2" value="Sim"> Sim</label><label><input type="radio" name="bg_q2" value="Não" checked> Não</label></div>
+                <textarea name="bg_q2_details" class="hidden-field" placeholder="Qual país, quando e o motivo."></textarea>
             </div>
-            <div class="form-group">
-                <label>3. Você já cometeu, foi preso(a), acusado(a) ou condenado(a) por qualquer crime em qualquer país?</label>
-                 <div class="radio-group">
-                    <label><input type="radio" name="bg_q3" value="Sim"> Sim</label>
-                    <label><input type="radio" name="bg_q3" value="Não" checked> Não</label>
-                </div>
-                <textarea name="bg_q3_details" class="hidden-field" placeholder="Forneça detalhes completos sobre o ocorrido."></textarea>
+            <div class="form-group"><label>3. Já cometeu, foi preso(a), acusado(a) ou condenado(a) por crime em qualquer país?</label>
+                 <div class="radio-group"><label><input type="radio" name="bg_q3" value="Sim"> Sim</label><label><input type="radio" name="bg_q3" value="Não" checked> Não</label></div>
+                <textarea name="bg_q3_details" class="hidden-field" placeholder="Forneça detalhes completos."></textarea>
+            </div>
+            <div class="form-group"><label>4. Serviu em alguma organização militar, milícia ou polícia?</label>
+                 <div class="radio-group"><label><input type="radio" name="bg_q4" value="Sim"> Sim</label><label><input type="radio" name="bg_q4" value="Não" checked> Não</label></div>
+                <textarea name="bg_q4_details" class="hidden-field" placeholder="Quais datas, país e detalhes da sua função."></textarea>
             </div>
         </div>
 
         <div class="form-section">
-            <h2>Seção 3: Declaração e Assinatura</h2>
+            <h2>Declaração e Assinatura</h2>
             <div class="declaration-box">
                 <h4>Declaração e Autorização</h4>
-                <p>Eu, <strong id="declarantName"></strong>, declaro, sob as penas da lei, que li e compreendi integralmente todas as questões contidas nesta solicitação de visto (Formulário IMM 5257) e afirmo que as respostas por mim fornecidas são verdadeiras, completas e corretas, conforme o meu melhor conhecimento e convicção.</p>
-                <p>Declaro estar ciente de que qualquer declaração falsa, incompleta ou enganosa poderá resultar na recusa do visto ou na negativa de admissão no Canadá.</p>
-                <p>Autorizo expressamente a empresa <strong>Objetivo Turismo Ltda.</strong>, a proceder com o envio eletrônico do Formulário IMM 5257 às autoridades canadenses, bem como a realizar o pagamento das taxas e os agendamentos necessários.</p>
+                <p>Eu, <strong id="declarantName"></strong>, declaro que li e compreendi as questões e que minhas respostas são verdadeiras e completas. Estou ciente de que fornecer informações falsas é uma ofensa grave sob a lei de imigração do Canadá.</p>
+                <p>Autorizo a empresa <strong>Objetivo Turismo Ltda.</strong> a proceder com o envio do Formulário IMM 5257 e realizar pagamentos e agendamentos em meu nome.</p>
             </div>
-            <div class="form-group">
-                <label for="signature_location">Local da Assinatura</label>
-                <input type="text" id="signature_location" name="signature_location" required>
-            </div>
-            <div class="agreement-group">
-                <input type="checkbox" id="agreeTerms">
-                <label for="agreeTerms">Li e concordo com os termos desta declaração.</label>
-            </div>
+            <div class="form-group"><label for="signature_location">Local</label><input type="text" id="signature_location" name="signature_location" required></div>
+            <div class="agreement-group"><input type="checkbox" id="agreeTerms"><label for="agreeTerms">Li e concordo com os termos.</label></div>
         </div>
 
         <div class="navigation-buttons">
@@ -121,33 +161,33 @@
 </div>
 
 <script>
+    // Inicialização do jsPDF
+    const { jsPDF } = window.jspdf;
+
     let currentSection = 0;
     const sections = document.querySelectorAll('.form-section');
     const progressBar = document.getElementById('progressBar');
     const submitBtn = document.getElementById('submitBtn');
     const agreeCheckbox = document.getElementById('agreeTerms');
-    const maritalStatusSelect = document.getElementById('maritalStatus');
-
+    
+    // --- LÓGICA DE NAVEGAÇÃO E VISUALIZAÇÃO ---
     function showSection(sectionIndex) {
         if (sectionIndex === sections.length - 1) {
             document.getElementById('declarantName').textContent = document.getElementById('fullName').value || "[Nome não informado]";
         }
-        sections.forEach((section, index) => {
-            section.classList.toggle('active', index === sectionIndex);
-        });
+        sections.forEach((section, index) => section.classList.toggle('active', index === sectionIndex));
         updateProgressBar();
         updateButtons();
     }
 
     function navigate(step) {
-        if (step === 1 && !validateForm()) return false;
+        if (step === 1 && !validateForm()) return;
         currentSection = Math.max(0, Math.min(sections.length - 1, currentSection + step));
         showSection(currentSection);
     }
 
     function updateProgressBar() {
-        const progress = ((currentSection) / (sections.length - 1)) * 100;
-        progressBar.style.width = progress + '%';
+        progressBar.style.width = ((currentSection) / (sections.length - 1)) * 100 + '%';
     }
 
     function updateButtons() {
@@ -161,8 +201,7 @@
 
     function validateForm() {
         const activeSection = sections[currentSection];
-        const inputs = activeSection.querySelectorAll('input[required], select[required], textarea[required]');
-        for (let input of inputs) {
+        for (const input of activeSection.querySelectorAll('[required]')) {
             if (!input.value) {
                 alert('Por favor, preencha todos os campos obrigatórios.');
                 input.focus();
@@ -172,96 +211,117 @@
         return true;
     }
 
-    // --- LÓGICA CONDICIONAL ---
-    maritalStatusSelect.addEventListener('change', (e) => {
-        const spouseDetails = document.getElementById('spouseDetails');
-        const relationshipDates = document.getElementById('relationshipDates');
-        const spouseLegend = document.getElementById('spouseLegend');
-        const value = e.target.value;
-
-        if (value === 'Casado(a)' || value === 'União Estável') {
-            spouseLegend.textContent = 'Dados do Cônjuge / Companheiro(a)';
-            spouseDetails.style.display = 'block';
-            relationshipDates.style.display = 'block';
-        } else if (value === 'Divorciado(a)' || value === 'Viúvo(a)') {
-            spouseLegend.textContent = 'Dados do Ex-Cônjuge';
-            spouseDetails.style.display = 'block';
-            relationshipDates.style.display = 'block';
-        } else {
-            spouseDetails.style.display = 'none';
-        }
-    });
-
-    document.querySelectorAll('input[type="radio"][name^="bg_q"]').forEach(radio => {
-        radio.addEventListener('change', (e) => {
-            const detailsTextarea = e.target.closest('.form-group').querySelector('textarea');
-            if (e.target.value === 'Sim') {
-                detailsTextarea.style.display = 'block';
-                detailsTextarea.required = true;
-            } else {
-                detailsTextarea.style.display = 'none';
-                detailsTextarea.required = false;
-                detailsTextarea.value = '';
-            }
+    // --- LÓGICA CONDICIONAL DOS CAMPOS ---
+    function setupConditionalLogic(radioGroupName, fieldId) {
+        document.querySelectorAll(`input[type="radio"][name="${radioGroupName}"]`).forEach(radio => {
+            radio.addEventListener('change', e => {
+                const field = document.getElementById(fieldId);
+                const isYes = e.target.value === 'Sim';
+                field.style.display = isYes ? 'block' : 'none';
+                field.querySelectorAll('input, textarea').forEach(input => input.required = isYes);
+            });
         });
-    });
+    }
+
+    setupConditionalLogic('usedOtherName', 'otherNameField');
+    setupConditionalLogic('livedOtherCountry', 'previousResidenceField');
+    setupConditionalLogic('hasNationalId', 'nationalIdField');
+    setupConditionalLogic('hasEducation', 'educationField');
+    setupConditionalLogic('bg_q1', 'bg_q1_details');
+    setupConditionalLogic('bg_q2', 'bg_q2_details');
+    setupConditionalLogic('bg_q3', 'bg_q3_details');
+    setupConditionalLogic('bg_q4', 'bg_q4_details');
     
+    document.getElementById('maritalStatus').addEventListener('change', e => {
+        const value = e.target.value;
+        const field = document.getElementById('spouseDetails');
+        const isNeeded = ['Casado(a)', 'União Estável', 'Divorciado(a)', 'Viúvo(a)'].includes(value);
+        field.style.display = isNeeded ? 'block' : 'none';
+        field.querySelectorAll('input').forEach(input => input.required = isNeeded);
+    });
+
     agreeCheckbox.addEventListener('change', updateButtons);
 
-    // --- GERAÇÃO DE PDF (CORRIGIDA E COMPLETA) ---
+    // --- GERAÇÃO DE PDF COMPLETA E CORRIGIDA ---
     async function generateAndSend() {
-        const { jsPDF } = window.jspdf;
         const doc = new jsPDF({ lineHeight: 1.5 });
-        const formData = new FormData(document.getElementById('imm5257Form'));
-        const data = Object.fromEntries(formData.entries());
+        const data = Object.fromEntries(new FormData(document.getElementById('imm5257Form')).entries());
+        let y = 22;
 
-        doc.setFontSize(18);
-        doc.text("Respostas - Formulário IMM 5257", 14, 22);
-        let y = 35;
+        const addTitle = (title) => {
+            if (y > 260) { doc.addPage(); y = 20; }
+            doc.setFontSize(14).setFont(undefined, 'bold');
+            doc.text(title, 14, y);
+            y += 10;
+        };
 
-        const addText = (label, value) => {
-            if (value) {
+        const addField = (label, value) => {
+            if (value && value.trim() !== '') {
                 if (y > 270) { doc.addPage(); y = 20; }
-                doc.setFontSize(12).setFont(undefined, 'bold');
+                doc.setFontSize(10).setFont(undefined, 'bold');
                 doc.text(label, 14, y);
-                doc.setFontSize(11).setFont(undefined, 'normal');
-                const textLines = doc.splitTextToSize(value, 180);
-                doc.text(textLines, 14, y + 6);
-                y += (textLines.length * 5) + 10;
+                doc.setFontSize(10).setFont(undefined, 'normal');
+                const textLines = doc.splitTextToSize(value, 170);
+                doc.text(textLines, 50, y);
+                y += (textLines.length * 5) + 4;
             }
         };
+
+        addTitle("Respostas - IMM 5257");
+
+        addTitle("Dados Pessoais");
+        addField("Nome Completo:", data.fullName);
+        addField("Outro Nome Usado:", data.otherName);
+        addField("Sexo:", data.sex);
+        addField("Data de Nasc.:", data.dob);
+        addField("Local de Nasc.:", data.pob);
+        addField("Cidadania:", data.citizenship);
         
-        // Populando o PDF com TODOS os dados
-        addText("Seção 1: Dados Pessoais", " ");
-        addText("Nome Completo:", data.fullName);
-        addText("Estado Civil:", data.maritalStatus);
-        addText("Nome do Cônjuge/Ex-Cônjuge:", data.spouseFullName);
-        addText("Data de Nasc. do Cônjuge/Ex-Cônjuge:", data.spouseDob);
-        addText("Data de Início do Relacionamento:", data.marriageDate);
-        addText("Data de Fim do Relacionamento:", data.separationDate);
+        addTitle("Residência e Estado Civil");
+        addField("País de Residência:", data.currentResidenceCountry);
+        addField("Status:", data.currentResidenceStatus);
+        addField("Resid. Anteriores:", data.previousResidenceDetails);
+        addField("Estado Civil:", data.maritalStatus);
+        addField("Nome Cônjuge:", data.spouseFullName);
+        addField("Data Casamento/União:", data.marriageDate);
         
-        addText("Seção 2: Informações de Histórico", " ");
-        addText("Teve Tuberculose?", `${data.bg_q1} ${data.bg_q1_details ? '- Detalhes: ' + data.bg_q1_details : ''}`);
-        addText("Visto/Entrada Recusada?", `${data.bg_q2} ${data.bg_q2_details ? '- Detalhes: ' + data.bg_q2_details : ''}`);
-        addText("Cometeu/Foi Preso por Crime?", `${data.bg_q3} ${data.bg_q3_details ? '- Detalhes: ' + data.bg_q3_details : ''}`);
+        addTitle("Passaporte e Documentos");
+        addField("No. Passaporte:", data.passportNumber);
+        addField("País Emissão:", data.passportCountry);
+        addField("Datas (Emissão/Val.):", `${data.passportIssueDate} / ${data.passportExpiryDate}`);
+        addField("ID Nacional:", data.nationalIdNumber);
+
+        addTitle("Contato e Visita");
+        addField("E-mail:", data.email);
+        addField("Telefone:", data.phone);
+        addField("Endereço:", data.mailingAddress);
+        addField("Propósito da Visita:", data.purpose);
+        addField("Período:", `${data.stay_from} a ${data.stay_to}`);
+        addField("Fundos (CAD):", data.funds);
+        addField("Pessoas/Locais a Visitar:", data.visit_person_details);
+
+        addTitle("Educação e Emprego");
+        addField("Educação:", data.educationDetails);
+        addField("Emprego (10 anos):", data.employmentDetails);
+
+        addTitle("Histórico");
+        addField("Tuberculose:", `${data.bg_q1} - ${data.bg_q1_details || ''}`);
+        addField("Visto Recusado:", `${data.bg_q2} - ${data.bg_q2_details || ''}`);
+        addField("Crimes:", `${data.bg_q3} - ${data.bg_q3_details || ''}`);
+        addField("Serviço Militar:", `${data.bg_q4} - ${data.bg_q4_details || ''}`);
         
-        addText("Seção 3: Declaração", " ");
-        addText("Local da Assinatura:", data.signature_location);
-        addText("Data da Assinatura:", new Date().toLocaleDateString('pt-BR'));
-        addText("Status do Termo:", "Concordou com os termos");
+        addTitle("Declaração");
+        addField("Local:", data.signature_location);
+        addField("Data:", new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().split('T')[0]);
+        addField("Termos:", "Concordou com os termos");
 
         const pdfName = `IMM5257_${data.fullName || 'Cliente'}.pdf`.replace(/[ ,]/g, '_');
         doc.save(pdfName);
 
-        alert(`PDF "${pdfName}" gerado com sucesso! Ele foi baixado no seu dispositivo. Agora vamos abrir o WhatsApp para você enviá-lo.`);
-        
-        const clientName = data.fullName || "o cliente";
-        const message = `Olá! Segue o formulário IMM 5257 preenchido por ${clientName}. O arquivo é "${pdfName}".`;
-        
-        // IMPORTANTE: Substitua 'SEUNUMERO' pelo seu número
-        const whatsappNumber = "5561999991865"; 
-        const whatsappUrl = `https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${encodeURIComponent(message)}`;
-        window.open(whatsappUrl, '_blank');
+        alert(`PDF "${pdfName}" gerado! Agora vamos abrir o WhatsApp para o envio.`);
+        const whatsappNumber = "5561999998165"; // <-- MUDE AQUI
+        const message = `Olá! Segue o formulário IMM 5257 de ${data.fullName}. O arquivo é "${pdfName}".`;
+        window.open(`https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${encodeURIComponent(message)}`, '_blank');
     }
 
     // Inicia o formulário
