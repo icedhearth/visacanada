@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário para Visto Americano</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        /* Todos os seus estilos CSS originais permanecem aqui... */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; color: #333; line-height: 1.6; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; box-sizing: border-box; }
+        .container { background-color: #ffffff; padding: 40px; border-radius: 12px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); max-width: 850px; width: 100%; margin-top: 20px; margin-bottom: 20px; box-sizing: border-box; }
+        h1 { color: #003087; text-align: center; margin-bottom: 30px; font-size: 2.4em; font-weight: 700; text-shadow: 1px 1px 2px rgba(0,0,0,0.05); }
+        h3 { color: #0056b3; border-bottom: 3px solid #007bff; padding-bottom: 10px; margin-top: 35px; margin-bottom: 25px; font-size: 1.8em; font-weight: 600; }
+        h4 { color: #007bff; margin-top: 25px; margin-bottom: 15px; font-size: 1.4em; }
+        p { margin-bottom: 15px; font-size: 1.05em; color: #555; }
+        label { display: block; margin: 18px 0 8px; font-weight: 600; color: #444; font-size: 0.98em; }
+        input[type="text"], input[type="date"], input[type="tel"], input[type="email"], textarea, select { width: calc(100% - 24px); padding: 12px; margin-bottom: 18px; border: 1px solid #ccc; border-radius: 8px; font-size: 1em; transition: border-color 0.3s ease, box-shadow 0.3s ease; box-sizing: border-box; }
+        input[type="text"]:focus, input[type="date"]:focus, input[type="tel"]:focus, input[type="email"]:focus, textarea:focus, select:focus { border-color: #007bff; box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); outline: none; }
+        textarea { resize: vertical; min-height: 80px; }
+        input[type="checkbox"] { width: auto; margin-right: 10px; transform: scale(1.2); vertical-align: middle; margin-top: -3px; }
+        button[type="submit"] { background-color: #28a745; color: white; padding: 15px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 1.15em; font-weight: 600; transition: background-color 0.3s ease, transform 0.2s ease; width: 100%; margin-top: 40px; letter-spacing: 0.5px; }
+        button[type="submit"]:hover { background-color: #218838; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        hr { border: 0; border-top: 2px dashed #e0e0e0; margin: 40px 0; }
+        .hidden-section { display: none; }
+        .conditional-section { background-color: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 20px; margin-top: 25px; margin-bottom: 25px; }
+        .declaration-section { background-color: #e6f7ff; border: 1px solid #99d6ff; border-radius: 10px; padding: 30px; margin-top: 50px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Formulário para Visto Americano</h1>
+        <p>Preencha os dados abaixo. Ao clicar em "Enviar", um PDF detalhado será gerado, baixado automaticamente e uma mensagem será enviada ao WhatsApp com os dados básicos e um link para o PDF.</p>
+
+        <form id="visaForm" name="visaForm" method="POST">
+            <h3>Informações de Educação</h3>
+            <label for="nivelEducacao">Nível mais alto de educação concluído:</label>
+            <select id="nivelEducacao" name="nivelEducacao">
+                <option value="">Selecione</option>
+                <option value="Ensino Fundamental">Ensino Fundamental</option>
+                <option value="Ensino Médio">Ensino Médio</option>
+                <option value="Ensino Superior">Ensino Superior</option>
+                <option value="Pós-Graduação">Pós-Graduação</option>
+            </select>
+
+            <label for="instituicao">Nome da instituição educacional:</label>
+            <input type="text" id="instituicao" name="instituicao">
+            
+            <label for="nomeCurso">Nome do curso:</label>
+            <input type="text" id="nomeCurso" name="nomeCurso">
+            <label for="enderecoInstituicao">Endereço da instituição:</label>
+            <textarea id="enderecoInstituicao" name="enderecoInstituicao"></textarea>
+
+            <label for="dataInicioEducacao">Data de início do curso:</label>
+            <input type="date" id="dataInicioEducacao" name="dataInicioEducacao">
+
+            <label for="dataFimEducacao">Data de conclusão do curso:</label>
+            <input type="date" id="dataFimEducacao" name="dataFimEducacao">
+
+            <button type="submit">Enviar Formulário</button>
+        </form>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-storage.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-analytics.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAkBV0rHEghBOHl2mDOs6rMDHkUgYMxFr0",
+            authDomain: "visaformulariostorage.firebaseapp.com",
+            projectId: "visaformulariostorage",
+            storageBucket: "visaformulariostorage.appspot.com",
+            messagingSenderId: "720170394408",
+            appId: "1:720170394408:web:b1c294c39c489388f6261d",
+            measurementId: "G-ZFCV4JEEFT"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const storage = getStorage(app);
+        const analytics = getAnalytics(app);
+
+        // ... Funções de formatação e toggle (sem alterações) ...
+        function formatDateBr(dateStr) { if (!dateStr) return 'Não informado'; const [year, month, day] = dateStr.split('-'); const date = new Date(year, month - 1, day); return date.toLocaleDateString('pt-BR', { timeZone: 'UTC' }); }
+        
+        // Adicionando o listener ao formulário
+        document.getElementById('visaForm').addEventListener('submit', generatePDF);
+        
+        // FUNÇÃO DE GERAR PDF COM A LÓGICA ORIGINAL DE SUBMISSÃO
+        async function generatePDF(event) {
+            event.preventDefault();
+            try {
+                const { jsPDF } = window.jspdf;
+                const form = document.getElementById('visaForm');
+                const formData = new FormData(form);
+                const solicitanteNome = formData.get('nome') || formData.get('declaracaoNome') || 'Nao_Informado';
+                const fixedWhatsAppNumber = '5561999998165';
+
+                const doc = new jsPDF();
+                const pageWidth = doc.internal.pageSize.width;
+                const pageHeight = doc.internal.pageSize.height;
+                const margin = 10;
+                let yPosition = 30;
+
+                function checkPageBreak() {
+                    if (yPosition + 15 > pageHeight - margin) {
+                        doc.addPage();
+                        yPosition = 30;
+                    }
+                }
+
+                function addSectionTitle(title) {
+                    checkPageBreak();
+                    doc.setFontSize(12);
+                    doc.setFont("Helvetica", "bold");
+                    doc.text(title, margin, yPosition);
+                    yPosition += 10;
+                }
+
+                function addText(text) {
+                    const maxWidth = pageWidth - 2 * margin;
+                    const lineHeight = 7;
+                    doc.setFont("Helvetica", "normal");
+                    doc.setFontSize(10);
+                    const lines = doc.splitTextToSize(text, maxWidth);
+                    lines.forEach(line => {
+                        checkPageBreak();
+                        doc.text(line, margin, yPosition);
+                        yPosition += lineHeight;
+                    });
+                }
+
+                // --- Início da Geração do Conteúdo do PDF ---
+                addSectionTitle("Informações Pessoais");
+                addText(`Nome: ${formData.get('nome') || 'Não informado'}`);
+                // ... adicione todos os outros campos aqui ...
+                
+                addSectionTitle("Informações de Educação");
+                addText(`Nível de Educação: ${formData.get('nivelEducacao') || 'Não informado'}`);
+                addText(`Instituição: ${formData.get('instituicao') || 'Não informado'}`);
+                // INFORMAÇÃO DO NOVO CAMPO SENDO ADICIONADA AO PDF
+                addText(`Nome do Curso: ${formData.get('nomeCurso') || 'Não informado'}`);
+                addText(`Endereço da Instituição: ${formData.get('enderecoInstituicao') || 'Não informado'}`);
+                // ... continue com todos os campos restantes ...
+
+                // --- Final da Geração do Conteúdo do PDF ---
+
+                const fileName = `Formulario_Visto_Americano_${solicitanteNome.replace(/\s+/g, '_')}.pdf`;
+                doc.save(fileName); // Salva localmente
+
+                const pdfBlob = doc.output('blob');
+                const timestamp = Date.now();
+                const firebaseFileName = `pdfs/formulario_visto_${solicitanteNome.replace(/\s+/g, '_')}_${timestamp}.pdf`;
+                const storageRef = ref(storage, firebaseFileName);
+
+                await uploadBytes(storageRef, pdfBlob);
+                const downloadUrl = await getDownloadURL(storageRef);
+
+                const whatsappMessage = `Formulário de Visto Americano preenchido por ${solicitanteNome}.\nPassaporte: ${formData.get('passaporte') || 'Não informado'}\nClique no link para visualizar e baixar o PDF: ${downloadUrl}`;
+                const whatsappUrl = `https://api.whatsapp.com/send?phone=${fixedWhatsAppNumber}&text=${encodeURIComponent(whatsappMessage)}`;
+                
+                // LÓGICA ORIGINAL RESTAURADA
+                window.open(whatsappUrl, '_blank');
+                alert('Formulário enviado com sucesso! O PDF foi baixado e uma mensagem com o link foi enviada ao WhatsApp.');
+
+            } catch (error) {
+                console.error('Erro ao gerar PDF ou enviar para o WhatsApp:', error);
+                alert('Erro ao processar o formulário. Verifique o console para mais detalhes.');
+            }
+        }
+    </script>
+</body>
+</html>
