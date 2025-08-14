@@ -3,170 +3,301 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulário para Visto Americano</title>
+    <title>Formulário IMM 5257 | Visto Canadense</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
-        /* Todos os seus estilos CSS originais permanecem aqui... */
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; color: #333; line-height: 1.6; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; box-sizing: border-box; }
-        .container { background-color: #ffffff; padding: 40px; border-radius: 12px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); max-width: 850px; width: 100%; margin-top: 20px; margin-bottom: 20px; box-sizing: border-box; }
-        h1 { color: #003087; text-align: center; margin-bottom: 30px; font-size: 2.4em; font-weight: 700; text-shadow: 1px 1px 2px rgba(0,0,0,0.05); }
-        h3 { color: #0056b3; border-bottom: 3px solid #007bff; padding-bottom: 10px; margin-top: 35px; margin-bottom: 25px; font-size: 1.8em; font-weight: 600; }
-        h4 { color: #007bff; margin-top: 25px; margin-bottom: 15px; font-size: 1.4em; }
-        p { margin-bottom: 15px; font-size: 1.05em; color: #555; }
-        label { display: block; margin: 18px 0 8px; font-weight: 600; color: #444; font-size: 0.98em; }
-        input[type="text"], input[type="date"], input[type="tel"], input[type="email"], textarea, select { width: calc(100% - 24px); padding: 12px; margin-bottom: 18px; border: 1px solid #ccc; border-radius: 8px; font-size: 1em; transition: border-color 0.3s ease, box-shadow 0.3s ease; box-sizing: border-box; }
-        input[type="text"]:focus, input[type="date"]:focus, input[type="tel"]:focus, input[type="email"]:focus, textarea:focus, select:focus { border-color: #007bff; box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); outline: none; }
-        textarea { resize: vertical; min-height: 80px; }
-        input[type="checkbox"] { width: auto; margin-right: 10px; transform: scale(1.2); vertical-align: middle; margin-top: -3px; }
-        button[type="submit"] { background-color: #28a745; color: white; padding: 15px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 1.15em; font-weight: 600; transition: background-color 0.3s ease, transform 0.2s ease; width: 100%; margin-top: 40px; letter-spacing: 0.5px; }
-        button[type="submit"]:hover { background-color: #218838; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        hr { border: 0; border-top: 2px dashed #e0e0e0; margin: 40px 0; }
-        .hidden-section { display: none; }
-        .conditional-section { background-color: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 20px; margin-top: 25px; margin-bottom: 25px; }
-        .declaration-section { background-color: #e6f7ff; border: 1px solid #99d6ff; border-radius: 10px; padding: 30px; margin-top: 50px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.05); }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .form-section {
+            display: none; /* Esconde todas as seções por padrão */
+        }
+        .form-section.active {
+            display: block; /* Mostra apenas a seção ativa */
+        }
+        .progress-bar {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 25px;
+        }
+        .progress-bar-fill {
+            height: 10px;
+            width: 0%;
+            background-color: #3498db;
+            border-radius: 5px;
+            transition: width 0.3s ease-in-out;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        input[type="text"], input[type="date"], input[type="email"], input[type="tel"], select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            background-color: #3498db;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button#prevBtn {
+            background-color: #95a5a6;
+        }
+        button#prevBtn:hover {
+            background-color: #7f8c8d;
+        }
+        #submitBtn {
+            background-color: #27ae60;
+        }
+        #submitBtn:hover {
+            background-color: #229954;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Formulário para Visto Americano</h1>
-        <p>Preencha os dados abaixo. Ao clicar em "Enviar", um PDF detalhado será gerado, baixado automaticamente e uma mensagem será enviada ao WhatsApp com os dados básicos e um link para o PDF.</p>
 
-        <form id="visaForm" name="visaForm" method="POST">
-            <h3>Informações de Educação</h3>
-            <label for="nivelEducacao">Nível mais alto de educação concluído:</label>
-            <select id="nivelEducacao" name="nivelEducacao">
-                <option value="">Selecione</option>
-                <option value="Ensino Fundamental">Ensino Fundamental</option>
-                <option value="Ensino Médio">Ensino Médio</option>
-                <option value="Ensino Superior">Ensino Superior</option>
-                <option value="Pós-Graduação">Pós-Graduação</option>
-            </select>
+<div class="container">
+    <h1>Formulário IMM 5257</h1>
+    <h2>Pedido de Visto de Visitante (Canadá)</h2>
 
-            <label for="instituicao">Nome da instituição educacional:</label>
-            <input type="text" id="instituicao" name="instituicao">
-            
-            <label for="nomeCurso">Nome do curso:</label>
-            <input type="text" id="nomeCurso" name="nomeCurso">
-            <label for="enderecoInstituicao">Endereço da instituição:</label>
-            <textarea id="enderecoInstituicao" name="enderecoInstituicao"></textarea>
-
-            <label for="dataInicioEducacao">Data de início do curso:</label>
-            <input type="date" id="dataInicioEducacao" name="dataInicioEducacao">
-
-            <label for="dataFimEducacao">Data de conclusão do curso:</label>
-            <input type="date" id="dataFimEducacao" name="dataFimEducacao">
-
-            <button type="submit">Enviar Formulário</button>
-        </form>
+    <div class="progress-bar">
+        <div class="progress-bar-fill" id="progressBar"></div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
-        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-storage.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-analytics.js";
+    <form id="imm5257Form">
+        <div class="form-section active" id="section1">
+            <h2>Seção 1: Dados Pessoais</h2>
+            <div class="form-group">
+                <label for="fullName">Nome Completo (como no passaporte)</label>
+                <input type="text" id="fullName" name="fullName" placeholder="SOBRENOME, Nome">
+            </div>
+            <div class="form-group">
+                <label for="otherName">Já usou outro nome? (Apelido, nome de solteira, etc.)</label>
+                <input type="text" id="otherName" name="otherName">
+            </div>
+            <div class="form-group">
+                <label for="sex">Sexo</label>
+                <select id="sex" name="sex">
+                    <option value="Masculino">Masculino</option>
+                    <option value="Feminino">Feminino</option>
+                    <option value="Outro">Outro</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="dob">Data de Nascimento</label>
+                <input type="date" id="dob" name="dob">
+            </div>
+             <div class="form-group">
+                <label for="pob">Local de Nascimento (Cidade e País)</label>
+                <input type="text" id="pob" name="pob" placeholder="Ex: São Paulo, Brasil">
+            </div>
+        </div>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAkBV0rHEghBOHl2mDOs6rMDHkUgYMxFr0",
-            authDomain: "visaformulariostorage.firebaseapp.com",
-            projectId: "visaformulariostorage",
-            storageBucket: "visaformulariostorage.appspot.com",
-            messagingSenderId: "720170394408",
-            appId: "1:720170394408:web:b1c294c39c489388f6261d",
-            measurementId: "G-ZFCV4JEEFT"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const storage = getStorage(app);
-        const analytics = getAnalytics(app);
-
-        // ... Funções de formatação e toggle (sem alterações) ...
-        function formatDateBr(dateStr) { if (!dateStr) return 'Não informado'; const [year, month, day] = dateStr.split('-'); const date = new Date(year, month - 1, day); return date.toLocaleDateString('pt-BR', { timeZone: 'UTC' }); }
+        <div class="form-section" id="section2">
+            <h2>Seção 2: Documentos</h2>
+            <div class="form-group">
+                <label for="passportNumber">Número do Passaporte</label>
+                <input type="text" id="passportNumber" name="passportNumber">
+            </div>
+            <div class="form-group">
+                <label for="passportCountry">País de Emissão do Passaporte</label>
+                <input type="text" id="passportCountry" name="passportCountry">
+            </div>
+            <div class="form-group">
+                <label for="passportIssueDate">Data de Emissão</label>
+                <input type="date" id="passportIssueDate" name="passportIssueDate">
+            </div>
+            <div class="form-group">
+                <label for="passportExpiryDate">Data de Validade</label>
+                <input type="date" id="passportExpiryDate" name="passportExpiryDate">
+            </div>
+        </div>
         
-        // Adicionando o listener ao formulário
-        document.getElementById('visaForm').addEventListener('submit', generatePDF);
+        <div class="form-section" id="section3">
+            <h2>Seção 3: Contato</h2>
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" name="email">
+            </div>
+            <div class="form-group">
+                <label for="phone">Telefone</label>
+                <input type="tel" id="phone" name="phone">
+            </div>
+             <div class="form-group">
+                <label for="address">Endereço Completo</label>
+                <textarea id="address" name="address" placeholder="Rua, Número, Bairro, Cidade, Estado, CEP"></textarea>
+            </div>
+        </div>
         
-        // FUNÇÃO DE GERAR PDF COM A LÓGICA ORIGINAL DE SUBMISSÃO
-        async function generatePDF(event) {
-            event.preventDefault();
-            try {
-                const { jsPDF } = window.jspdf;
-                const form = document.getElementById('visaForm');
-                const formData = new FormData(form);
-                const solicitanteNome = formData.get('nome') || formData.get('declaracaoNome') || 'Nao_Informado';
-                const fixedWhatsAppNumber = '5561999998165';
+        <div class="form-section" id="section4">
+            <h2>Seção 4: Detalhes da Visita ao Canadá</h2>
+             <div class="form-group">
+                <label for="purpose">Propósito da Visita</label>
+                <input type="text" id="purpose" name="purpose" placeholder="Turismo, visitar família, etc.">
+            </div>
+             <div class="form-group">
+                <label for="stay_from">Data de Chegada Planejada</label>
+                <input type="date" id="stay_from" name="stay_from">
+            </div>
+            <div class="form-group">
+                <label for="stay_to">Data de Saída Planejada</label>
+                <input type="date" id="stay_to" name="stay_to">
+            </div>
+             <div class="form-group">
+                <label for="funds">Fundos disponíveis para a estadia (em CAD)</label>
+                <input type="text" id="funds" name="funds" placeholder="Ex: 5000">
+            </div>
+        </div>
 
-                const doc = new jsPDF();
-                const pageWidth = doc.internal.pageSize.width;
-                const pageHeight = doc.internal.pageSize.height;
-                const margin = 10;
-                let yPosition = 30;
+        <div class="form-section" id="section5">
+            <h2>Finalização</h2>
+            <p>Por favor, revise suas informações antes de gerar o PDF. Todas as seções foram preenchidas.</p>
+            <p>Ao clicar no botão abaixo, um arquivo PDF será gerado e baixado no seu dispositivo. Em seguida, o WhatsApp será aberto para que você possa enviá-lo.</p>
+        </div>
 
-                function checkPageBreak() {
-                    if (yPosition + 15 > pageHeight - margin) {
-                        doc.addPage();
-                        yPosition = 30;
-                    }
+        <div class="navigation-buttons">
+            <button type="button" id="prevBtn" onclick="navigate(-1)">Anterior</button>
+            <button type="button" id="nextBtn" onclick="navigate(1)">Próximo</button>
+            <button type="button" id="submitBtn" style="display:none;" onclick="generateAndSend()">Gerar PDF e Enviar</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    let currentSection = 0;
+    const sections = document.querySelectorAll('.form-section');
+    const progressBar = document.getElementById('progressBar');
+    
+    // Função para mostrar a seção correta
+    function showSection(sectionIndex) {
+        sections.forEach((section, index) => {
+            section.classList.toggle('active', index === sectionIndex);
+        });
+        updateProgressBar();
+        updateButtons();
+    }
+
+    // Função de navegação
+    function navigate(step) {
+        // Validação simples (pode ser melhorada)
+        if (step === 1 && !validateForm()) return false;
+
+        currentSection += step;
+        showSection(currentSection);
+    }
+
+    // Função para atualizar a barra de progresso
+    function updateProgressBar() {
+        const progress = ((currentSection + 1) / sections.length) * 100;
+        progressBar.style.width = progress + '%';
+    }
+
+    // Função para mostrar/esconder botões
+    function updateButtons() {
+        document.getElementById('prevBtn').style.display = currentSection === 0 ? 'none' : 'inline-block';
+        document.getElementById('nextBtn').style.display = currentSection === sections.length - 1 ? 'none' : 'inline-block';
+        document.getElementById('submitBtn').style.display = currentSection === sections.length - 1 ? 'inline-block' : 'none';
+    }
+
+    // Função de validação (exemplo básico)
+    function validateForm() {
+        // Adicionar lógica de validação mais robusta aqui
+        return true;
+    }
+
+    // --- Lógica de Geração de PDF e Envio ---
+    async function generateAndSend() {
+        // Importa o objeto jsPDF do módulo
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        // Coleta todos os dados do formulário
+        const formData = new FormData(document.getElementById('imm5257Form'));
+        const data = Object.fromEntries(formData.entries());
+
+        // Monta o conteúdo do PDF
+        doc.setFontSize(18);
+        doc.text("Respostas - Formulário IMM 5257", 14, 22);
+        
+        doc.setFontSize(12);
+        let y = 40; // Posição vertical inicial
+
+        // Adiciona os dados ao PDF
+        for (const [key, value] of Object.entries(data)) {
+            if (value) { // Só adiciona campos preenchidos
+                doc.text(`${key}: ${value}`, 14, y);
+                y += 10; // Incrementa a posição para a próxima linha
+                if (y > 280) { // Se passar do fim da página, cria uma nova
+                    doc.addPage();
+                    y = 20;
                 }
-
-                function addSectionTitle(title) {
-                    checkPageBreak();
-                    doc.setFontSize(12);
-                    doc.setFont("Helvetica", "bold");
-                    doc.text(title, margin, yPosition);
-                    yPosition += 10;
-                }
-
-                function addText(text) {
-                    const maxWidth = pageWidth - 2 * margin;
-                    const lineHeight = 7;
-                    doc.setFont("Helvetica", "normal");
-                    doc.setFontSize(10);
-                    const lines = doc.splitTextToSize(text, maxWidth);
-                    lines.forEach(line => {
-                        checkPageBreak();
-                        doc.text(line, margin, yPosition);
-                        yPosition += lineHeight;
-                    });
-                }
-
-                // --- Início da Geração do Conteúdo do PDF ---
-                addSectionTitle("Informações Pessoais");
-                addText(`Nome: ${formData.get('nome') || 'Não informado'}`);
-                // ... adicione todos os outros campos aqui ...
-                
-                addSectionTitle("Informações de Educação");
-                addText(`Nível de Educação: ${formData.get('nivelEducacao') || 'Não informado'}`);
-                addText(`Instituição: ${formData.get('instituicao') || 'Não informado'}`);
-                // INFORMAÇÃO DO NOVO CAMPO SENDO ADICIONADA AO PDF
-                addText(`Nome do Curso: ${formData.get('nomeCurso') || 'Não informado'}`);
-                addText(`Endereço da Instituição: ${formData.get('enderecoInstituicao') || 'Não informado'}`);
-                // ... continue com todos os campos restantes ...
-
-                // --- Final da Geração do Conteúdo do PDF ---
-
-                const fileName = `Formulario_Visto_Americano_${solicitanteNome.replace(/\s+/g, '_')}.pdf`;
-                doc.save(fileName); // Salva localmente
-
-                const pdfBlob = doc.output('blob');
-                const timestamp = Date.now();
-                const firebaseFileName = `pdfs/formulario_visto_${solicitanteNome.replace(/\s+/g, '_')}_${timestamp}.pdf`;
-                const storageRef = ref(storage, firebaseFileName);
-
-                await uploadBytes(storageRef, pdfBlob);
-                const downloadUrl = await getDownloadURL(storageRef);
-
-                const whatsappMessage = `Formulário de Visto Americano preenchido por ${solicitanteNome}.\nPassaporte: ${formData.get('passaporte') || 'Não informado'}\nClique no link para visualizar e baixar o PDF: ${downloadUrl}`;
-                const whatsappUrl = `https://api.whatsapp.com/send?phone=${fixedWhatsAppNumber}&text=${encodeURIComponent(whatsappMessage)}`;
-                
-                // LÓGICA ORIGINAL RESTAURADA
-                window.open(whatsappUrl, '_blank');
-                alert('Formulário enviado com sucesso! O PDF foi baixado e uma mensagem com o link foi enviada ao WhatsApp.');
-
-            } catch (error) {
-                console.error('Erro ao gerar PDF ou enviar para o WhatsApp:', error);
-                alert('Erro ao processar o formulário. Verifique o console para mais detalhes.');
             }
         }
-    </script>
+        
+        // Gera e baixa o PDF
+        const pdfName = `IMM5257_${data.fullName || 'Cliente'}.pdf`.replace(/, | /g, '_');
+        doc.save(pdfName);
+        
+        // Prepara para enviar via WhatsApp
+        alert("PDF gerado com sucesso! Ele foi baixado no seu dispositivo. Agora vamos abrir o WhatsApp para você enviá-lo.");
+        
+        const clientName = data.fullName || "o cliente";
+        const message = `Olá! Segue o formulário IMM 5257 preenchido por ${clientName}. Por favor, anexe o arquivo PDF que acabou de ser baixado.`;
+        
+        // Substitua 'SEUNUMERO' pelo número de telefone no formato internacional (ex: 5511999998888)
+        const whatsappNumber = "SEUNUMERO"; 
+        const whatsappUrl = `https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${encodeURIComponent(message)}`;
+        
+        window.open(whatsappUrl, '_blank');
+    }
+
+    // Inicia o formulário
+    showSection(currentSection);
+</script>
+
 </body>
 </html>
