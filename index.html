@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulário IMM 5257 (Firebase + Local) | Visto Canadense</title>
+    <title>Formulário IMM 5257 (Firebase) | Visto Canadense</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     
@@ -90,12 +90,12 @@
 <script type="module">
     // --- INÍCIO DA SEÇÃO DE SCRIPTS ATUALIZADA ---
 
-    // 1. Importações do Firebase SDK
+    // 1. Importações do Firebase SDK (como no seu arquivo)
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
     import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-storage.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-analytics.js";
 
-    // 2. Suas credenciais do Firebase
+    // 2. Suas credenciais do Firebase (extraídas do arquivo que você forneceu)
     const firebaseConfig = {
         apiKey: "AIzaSyAkBV0rHEghBOHl2mDOs6rMDHkUgYMxFr0",
         authDomain: "visaformulariostorage.firebaseapp.com",
@@ -112,7 +112,7 @@
     const analytics = getAnalytics(app);
     const { jsPDF } = window.jspdf;
 
-    // A lógica de navegação e campos condicionais permanece a mesma
+    // A lógica de navegação e campos condicionais permanece a mesma da versão anterior
     let currentSection = 0;
     const sections = document.querySelectorAll('.form-section');
     const progressBar = document.getElementById('progressBar');
@@ -131,14 +131,12 @@
         submitBtn.textContent = 'Processando...';
         
         try {
-            // 1. Gerar o PDF 
+            // 1. Gerar o PDF em memória como um 'blob'
+            alert('Gerando o PDF...');
             const doc = new jsPDF({ lineHeight: 1.5 });
             const data = Object.fromEntries(new FormData(document.getElementById('imm5257Form')).entries());
-            const solicitanteNome = data.fullName || 'Nao_Informado';
-            const timestamp = Date.now();
-            const pdfName = `IMM5257_${solicitanteNome.replace(/\s+/g, '_')}_${timestamp}.pdf`;
             
-            // Lógica para popular o PDF
+            // Lógica para popular o PDF (idêntica à versão anterior)
             let y = 22;
             const addTitle = (title) => { if (y > 260) { doc.addPage(); y = 20; } doc.setFontSize(14).setFont(undefined, 'bold'); doc.text(title, 14, y); y += 10; };
             const addField = (label, value) => {
@@ -159,25 +157,24 @@
             addField("Data:", new Date().toLocaleDateString('pt-BR'));
             addField("Termos:", "Concordou com os termos");
 
-            // 2. Salvar o PDF localmente no dispositivo do cliente
-            doc.save(pdfName); // <<< ADICIONADO PARA SALVAMENTO LOCAL
-
-            // 3. Preparar o 'blob' para upload
             const pdfBlob = doc.output('blob');
+            const solicitanteNome = data.fullName || 'Nao_Informado';
+            const timestamp = Date.now();
+            const firebaseFileName = `formularios_canada/IMM5257_${solicitanteNome.replace(/\s+/g, '_')}_${timestamp}.pdf`;
 
-            // 4. Fazer o Upload para o Firebase Storage
-            alert('PDF salvo no seu dispositivo! Enviando para o servidor seguro...');
-            const firebaseFileName = `formularios_canada/${pdfName}`;
+            // 2. Fazer o Upload para o Firebase Storage
+            alert('Enviando para o servidor seguro...');
             const storageRef = ref(storage, firebaseFileName);
             await uploadBytes(storageRef, pdfBlob);
 
-            // 5. Obter a URL de Download
+            // 3. Obter a URL de Download
             const downloadUrl = await getDownloadURL(storageRef);
             
-            // 6. Montar e abrir o link do WhatsApp
+            // 4. Montar e abrir o link do WhatsApp
             alert('Sucesso! Preparando para enviar via WhatsApp.');
-            const whatsappMessage = `Análise de Visto Canadense para ${solicitanteNome} está pronta.\n\nO PDF também foi salvo no seu dispositivo.\n\nAcesse o formulário seguro no link: ${downloadUrl}`;
+            const whatsappMessage = `Análise de Visto Canadense para ${solicitanteNome} está pronta.\n\nAcesse o formulário seguro no link: ${downloadUrl}`;
             
+            // Use o mesmo número do seu outro formulário
             const fixedWhatsAppNumber = '5561999998165';
             const whatsappUrl = `https://api.whatsapp.com/send?phone=${fixedWhatsAppNumber}&text=${encodeURIComponent(whatsappMessage)}`;
             
@@ -192,13 +189,14 @@
         }
     }
     
-    // Funções auxiliares (sem alteração)
+    // Funções auxiliares que precisam estar no escopo global para o onclick
     function showSection(sectionIndex) {
         if (sectionIndex === sections.length - 1) { document.getElementById('declarantName').textContent = document.getElementById('fullName').value || "[Nome não informado]"; }
         sections.forEach((section, index) => section.classList.toggle('active', index === sectionIndex));
         updateProgressBar();
         updateButtons();
     }
+    
     function validateForm() {
         const activeSection = sections[currentSection];
         for (const input of activeSection.querySelectorAll('[required]')) {
@@ -206,12 +204,46 @@
         }
         return true;
     }
+    
     function updateProgressBar() { progressBar.style.width = ((currentSection) / (sections.length - 1)) * 100 + '%'; }
+    
     function updateButtons() {
         document.getElementById('prevBtn').style.display = currentSection === 0 ? 'none' : 'inline-block';
         document.getElementById('nextBtn').style.display = currentSection === sections.length - 1 ? 'none' : 'inline-block';
         submitBtn.style.display = currentSection === sections.length - 1 ? 'inline-block' : 'none';
         if (currentSection === sections.length - 1) { submitBtn.disabled = !agreeCheckbox.checked; }
     }
+    
+    // Lógica condicional (precisa ser exposta ou chamada internamente)
     function setupConditionalLogic(radioGroupName, fieldId) {
         document.querySelectorAll(`input[type="radio"][name="${radioGroupName}"]`).forEach(radio => {
+            radio.addEventListener('change', e => {
+                const field = document.getElementById(fieldId);
+                const isYes = e.target.value === 'Sim';
+                field.style.display = isYes ? 'block' : 'none';
+                field.querySelectorAll('input, textarea').forEach(input => input.required = isYes);
+            });
+        });
+    }
+
+    // Inicia a lógica condicional e o formulário
+    setupConditionalLogic('usedOtherName', 'otherNameField');
+    setupConditionalLogic('livedOtherCountry', 'previousResidenceField');
+    setupConditionalLogic('hasNationalId', 'nationalIdField');
+    setupConditionalLogic('hasEducation', 'educationField');
+    setupConditionalLogic('bg_q1', 'bg_q1_details'); setupConditionalLogic('bg_q2', 'bg_q2_details'); setupConditionalLogic('bg_q3', 'bg_q3_details'); setupConditionalLogic('bg_q4', 'bg_q4_details');
+    document.getElementById('maritalStatus').addEventListener('change', e => {
+        const value = e.target.value; const field = document.getElementById('spouseDetails');
+        const isNeeded = ['Casado(a)', 'União Estável', 'Divorciado(a)', 'Viúvo(a)'].includes(value);
+        field.style.display = isNeeded ? 'block' : 'none';
+        field.querySelectorAll('input').forEach(input => input.required = isNeeded);
+    });
+    agreeCheckbox.addEventListener('change', updateButtons);
+    
+    // Inicia o formulário na primeira seção
+    showSection(currentSection);
+
+</script>
+
+</body>
+</html>
