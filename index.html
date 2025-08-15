@@ -172,15 +172,16 @@
     import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-storage.js";
 
     // 2. Suas credenciais do Firebase (extraídas do arquivo que você forneceu)
-    const firebaseConfig = {
-        apiKey: "AIzaSyAkBV0rHEghBOHl2mDOs6rMDHkUgYMxFr0",
-        authDomain: "visaformulariostorage.firebaseapp.com",
-        projectId: "visaformulariostorage",
-        storageBucket: "visaformulariostorage.appspot.com",
-        messagingSenderId: "720170394408",
-        appId: "1:720170394408:web:b1c294c39c489388f6261d",
-        measurementId: "G-ZFCV4JEEFT"
-    };
+const firebaseConfig = {
+    apiKey: "AIzaSyAkBV0rHEghBOHl2mDOs6rMDHkUgYMxFr0",
+    authDomain: "visaformulariostorage.firebaseapp.com",
+    projectId: "visaformulariostorage",
+    // 👇 ESTA É A LINHA CORRETA
+    storageBucket: "visaformulariostorage.firebasestorage.app", 
+    messagingSenderId: "720170394408",
+    appId: "1:720170394408:web:b1c294c39c489388f6261d",
+    measurementId: "G-ZFCV4JEEFT"
+};
 
     // 3. Inicialização do Firebase
     const app = initializeApp(firebaseConfig);
