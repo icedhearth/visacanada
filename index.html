@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulário IMM 5257 (COMPLETO) | Visto Canadense</title>
+    <title>Formulário IMM 5257 (Final) | Visto Canadense</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     
@@ -41,7 +41,6 @@
 <div class="container">
     <h1>Formulário de Visto Canadense (IMM 5257)</h1>
     <div class="progress-bar"><div class="progress-bar-fill" id="progressBar"></div></div>
-
     <form id="imm5257Form">
         <div class="form-section active">
             <h2>Dados Pessoais</h2>
@@ -55,11 +54,9 @@
             <div class="form-group"><label for="pob">Local de Nascimento (Cidade e País)</label><input type="text" id="pob" name="pob" required></div>
             <div class="form-group"><label for="citizenship">Cidadania</label><input type="text" id="citizenship" name="citizenship" required></div>
         </div>
-
         <div class="form-section">
             <h2>Residência</h2>
-            <fieldset>
-                <legend>Residência Atual</legend>
+            <fieldset><legend>Residência Atual</legend>
                 <div class="form-group"><label for="currentResidenceCountry">País/Território</label><input type="text" id="currentResidenceCountry" name="currentResidenceCountry" required></div>
                 <div class="form-group"><label for="currentResidenceStatus">Status</label><select id="currentResidenceStatus" name="currentResidenceStatus"><option>Cidadão</option><option>Residente Permanente</option><option>Trabalhador</option><option>Estudante</option><option>Visitante</option><option>Outro</option></select></div>
             </fieldset>
@@ -68,7 +65,6 @@
                 <div id="previousResidenceField" class="hidden-field"><label for="previousResidenceDetails">Detalhes dos países anteriores</label><textarea name="previousResidenceDetails" placeholder="Liste cada país, status e período."></textarea></div>
             </div>
         </div>
-
         <div class="form-section">
             <h2>Estado Civil e Idioma</h2>
             <div class="form-group"><label for="maritalStatus">Estado Civil Atual</label>
@@ -83,7 +79,6 @@
             <div class="form-group"><label for="nativeLanguage">Língua Nativa</label><input type="text" id="nativeLanguage" name="nativeLanguage"></div>
             <div class="form-group"><label for="correspondenceLanguage">Idioma para correspondência</label><select id="correspondenceLanguage" name="correspondenceLanguage"><option>Inglês</option><option>Francês</option></select></div>
         </div>
-
         <div class="form-section">
             <h2>Passaporte e Documentos</h2>
             <fieldset><legend>Passaporte</legend>
@@ -97,14 +92,12 @@
                 <div id="nationalIdField" class="hidden-field"><label for="nationalIdNumber">Número do Documento</label><input type="text" id="nationalIdNumber" name="nationalIdNumber"></div>
             </div>
         </div>
-        
         <div class="form-section">
             <h2>Informações de Contato</h2>
             <div class="form-group"><label for="mailingAddress">Endereço de Correspondência</label><textarea id="mailingAddress" name="mailingAddress" required placeholder="Endereço completo com rua, número, bairro, CEP, cidade e país."></textarea></div>
             <div class="form-group"><label for="phone">Telefone Celular</label><input type="tel" id="phone" name="phone" required></div>
             <div class="form-group"><label for="email">E-mail</label><input type="email" id="email" name="email" required></div>
         </div>
-
         <div class="form-section">
             <h2>Detalhes da Visita ao Canadá</h2>
             <div class="form-group"><label for="purpose">Propósito da Visita</label><select id="purpose" name="purpose"><option>Turismo</option><option>Negócios</option><option>Visitar Família/Amigos</option></select></div>
@@ -113,7 +106,6 @@
             <div class="form-group"><label for="funds">Fundos disponíveis para a estadia (CAD)</label><input type="text" id="funds" name="funds" placeholder="Ex: 5000" required></div>
             <div class="form-group"><label for="visit_person_details">Pessoas ou instituições que irá visitar (Nome, endereço, relação)</label><textarea id="visit_person_details" name="visit_person_details"></textarea></div>
         </div>
-        
         <div class="form-section">
             <h2>Educação e Emprego</h2>
             <div class="form-group"><label>Possui ensino superior ou técnico?</label>
@@ -122,7 +114,6 @@
             </div>
             <div class="form-group"><label for="employmentDetails">Histórico de Emprego (últimos 10 anos)</label><textarea id="employmentDetails" name="employmentDetails" placeholder="Liste cada emprego (período, cargo, empregador, cidade), começando pelo mais recente." required></textarea></div>
         </div>
-
         <div class="form-section">
             <h2>Informações de Histórico</h2>
             <p>Responda "Sim" ou "Não" para as perguntas abaixo. Se responder "Sim", forneça detalhes.</p>
@@ -143,7 +134,6 @@
                 <textarea name="bg_q4_details" class="hidden-field" placeholder="Quais datas, país e detalhes da sua função."></textarea>
             </div>
         </div>
-
         <div class="form-section">
             <h2>Declaração e Assinatura</h2>
             <div class="declaration-box">
@@ -154,7 +144,6 @@
             <div class="form-group"><label for="signature_location">Local</label><input type="text" id="signature_location" name="signature_location" required></div>
             <div class="agreement-group"><input type="checkbox" id="agreeTerms"><label for="agreeTerms">Li e concordo com os termos.</label></div>
         </div>
-
         <div class="navigation-buttons">
             <button type="button" id="prevBtn" onclick="navigate(-1)">Anterior</button>
             <button type="button" id="nextBtn" onclick="navigate(1)">Próximo</button>
@@ -163,7 +152,6 @@
     </form>
 </div>
 
-
 <script type="module">
     // --- INÍCIO DA SEÇÃO DE SCRIPTS ATUALIZADA ---
 
@@ -171,17 +159,16 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
     import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-storage.js";
 
-    // 2. Suas credenciais do Firebase (extraídas do arquivo que você forneceu)
-const firebaseConfig = {
-    apiKey: "AIzaSyAkBV0rHEghBOHl2mDOs6rMDHkUgYMxFr0",
-    authDomain: "visaformulariostorage.firebaseapp.com",
-    projectId: "visaformulariostorage",
-    // 👇 ESTA É A LINHA CORRETA
-    storageBucket: "visaformulariostorage.firebasestorage.app", 
-    messagingSenderId: "720170394408",
-    appId: "1:720170394408:web:b1c294c39c489388f6261d",
-    measurementId: "G-ZFCV4JEEFT"
-};
+    // 2. Suas credenciais do Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyAkBV0rHEghBOHl2mDOs6rMDHkUgYMxFr0",
+        authDomain: "visaformulariostorage.firebaseapp.com",
+        projectId: "visaformulariostorage",
+        storageBucket: "visaformulariostorage.firebasestorage.app", // Nome correto do bucket
+        messagingSenderId: "720170394408",
+        appId: "1:720170394408:web:b1c294c39c489388f6261d",
+        measurementId: "G-ZFCV4JEEFT"
+    };
 
     // 3. Inicialização do Firebase
     const app = initializeApp(firebaseConfig);
@@ -206,17 +193,24 @@ const firebaseConfig = {
         submitBtn.textContent = 'Processando...';
         
         try {
-            alert('Gerando o PDF...');
-            const doc = new jsPDF({ lineHeight: 1.5 });
             const data = Object.fromEntries(new FormData(document.getElementById('imm5257Form')).entries());
+            const doc = new jsPDF({ lineHeight: 1.5 });
             
-            // Lógica COMPLETA para popular o PDF
+            // Popula o PDF com todos os dados do formulário
             populatePdf(doc, data);
 
-            const pdfBlob = doc.output('blob');
             const solicitanteNome = data.fullName || 'Nao_Informado';
             const timestamp = Date.now();
-            const firebaseFileName = `formularios_canada/IMM5257_${solicitanteNome.replace(/\s+/g, '_')}_${timestamp}.pdf`;
+            const pdfName = `IMM5257_${solicitanteNome.replace(/\s+/g, '_')}_${timestamp}.pdf`;
+            
+            // ALTERAÇÃO 1: SALVAR O PDF LOCALMENTE
+            doc.save(pdfName); 
+            alert('Gerando o PDF e salvando em seu dispositivo...');
+
+            const pdfBlob = doc.output('blob');
+            
+            // ALTERAÇÃO 2: APONTAR PARA A PASTA 'pdfs/'
+            const firebaseFileName = `pdfs/IMM5257_${solicitanteNome.replace(/\s+/g, '_')}_${timestamp}.pdf`;
 
             alert('Enviando para o servidor seguro...');
             const storageRef = ref(storage, firebaseFileName);
@@ -241,123 +235,29 @@ const firebaseConfig = {
         }
     }
     
-    // --- FUNÇÕES AUXILIARES ---
+    // --- FUNÇÕES AUXILIARES (sem alteração) ---
     function populatePdf(doc, data) {
         let y = 22;
-        const addTitle = (title) => {
-            if (y > 260) { doc.addPage(); y = 20; }
-            doc.setFontSize(14).setFont(undefined, 'bold');
-            doc.text(title, 14, y);
-            y += 10;
-        };
-        const addField = (label, value) => {
-            if (value && value.trim() !== '') {
-                if (y > 270) { doc.addPage(); y = 20; }
-                doc.setFontSize(10).setFont(undefined, 'bold'); doc.text(label, 14, y);
-                doc.setFontSize(10).setFont(undefined, 'normal');
-                const textLines = doc.splitTextToSize(value, 170); doc.text(textLines, 50, y);
-                y += (textLines.length * 5) + 4;
-            }
-        };
-
+        const addTitle = (title) => { if (y > 260) { doc.addPage(); y = 20; } doc.setFontSize(14).setFont(undefined, 'bold'); doc.text(title, 14, y); y += 10; };
+        const addField = (label, value) => { if (value && value.trim() !== '') { if (y > 270) { doc.addPage(); y = 20; } doc.setFontSize(10).setFont(undefined, 'bold'); doc.text(label, 14, y); doc.setFontSize(10).setFont(undefined, 'normal'); const textLines = doc.splitTextToSize(value, 170); doc.text(textLines, 50, y); y += (textLines.length * 5) + 4; } };
         addTitle("Respostas - Formulário IMM 5257");
-        
-        addTitle("Dados Pessoais");
-        addField("Nome Completo:", data.fullName);
-        addField("Outro Nome Usado:", data.otherName);
-        addField("Sexo:", data.sex);
-        addField("Data de Nasc.:", data.dob);
-        addField("Local de Nasc.:", data.pob);
-        addField("Cidadania:", data.citizenship);
-        
-        addTitle("Residência e Estado Civil");
-        addField("País de Residência:", data.currentResidenceCountry);
-        addField("Status:", data.currentResidenceStatus);
-        addField("Resid. Anteriores:", data.previousResidenceDetails);
-        addField("Estado Civil:", data.maritalStatus);
-        addField("Nome Cônjuge:", data.spouseFullName);
-        addField("Data Casamento/União:", data.marriageDate);
-        addField("Língua Nativa:", data.nativeLanguage);
-        addField("Idioma Correspondência:", data.correspondenceLanguage);
-        
-        addTitle("Passaporte e Documentos");
-        addField("No. Passaporte:", data.passportNumber);
-        addField("País Emissão:", data.passportCountry);
-        addField("Datas (Emissão/Val.):", `${data.passportIssueDate || ''} / ${data.passportExpiryDate || ''}`);
-        addField("ID Nacional:", data.nationalIdNumber);
-
-        addTitle("Contato e Visita");
-        addField("E-mail:", data.email);
-        addField("Telefone:", data.phone);
-        addField("Endereço:", data.mailingAddress);
-        addField("Propósito da Visita:", data.purpose);
-        addField("Período:", `${data.stay_from || ''} a ${data.stay_to || ''}`);
-        addField("Fundos (CAD):", data.funds);
-        addField("Pessoas/Locais a Visitar:", data.visit_person_details);
-
-        addTitle("Educação e Emprego");
-        addField("Educação:", data.educationDetails);
-        addField("Emprego (10 anos):", data.employmentDetails);
-
-        addTitle("Histórico");
-        addField("Tuberculose:", `${data.bg_q1} ${data.bg_q1_details ? '- Detalhes: ' + data.bg_q1_details : ''}`);
-        addField("Visto Recusado:", `${data.bg_q2} ${data.bg_q2_details ? '- Detalhes: ' + data.bg_q2_details : ''}`);
-        addField("Crimes:", `${data.bg_q3} ${data.bg_q3_details ? '- Detalhes: ' + data.bg_q3_details : ''}`);
-        addField("Serviço Militar:", `${data.bg_q4} ${data.bg_q4_details ? '- Detalhes: ' + data.bg_q4_details : ''}`);
-        
-        addTitle("Declaração");
-        addField("Local:", data.signature_location);
-        addField("Data:", new Date().toLocaleDateString('pt-BR'));
-        addField("Termos:", data.agreeTerms ? "Concordou com os termos" : "Não concordou");
+        addTitle("Dados Pessoais"); addField("Nome Completo:", data.fullName); addField("Outro Nome Usado:", data.otherName); addField("Sexo:", data.sex); addField("Data de Nasc.:", data.dob); addField("Local de Nasc.:", data.pob); addField("Cidadania:", data.citizenship);
+        addTitle("Residência e Estado Civil"); addField("País de Residência:", data.currentResidenceCountry); addField("Status:", data.currentResidenceStatus); addField("Resid. Anteriores:", data.previousResidenceDetails); addField("Estado Civil:", data.maritalStatus); addField("Nome Cônjuge:", data.spouseFullName); addField("Data Casamento/União:", data.marriageDate); addField("Língua Nativa:", data.nativeLanguage); addField("Idioma Correspondência:", data.correspondenceLanguage);
+        addTitle("Passaporte e Documentos"); addField("No. Passaporte:", data.passportNumber); addField("País Emissão:", data.passportCountry); addField("Datas (Emissão/Val.):", `${data.passportIssueDate || ''} / ${data.passportExpiryDate || ''}`); addField("ID Nacional:", data.nationalIdNumber);
+        addTitle("Contato e Visita"); addField("E-mail:", data.email); addField("Telefone:", data.phone); addField("Endereço:", data.mailingAddress); addField("Propósito da Visita:", data.purpose); addField("Período:", `${data.stay_from || ''} a ${data.stay_to || ''}`); addField("Fundos (CAD):", data.funds); addField("Pessoas/Locais a Visitar:", data.visit_person_details);
+        addTitle("Educação e Emprego"); addField("Educação:", data.educationDetails); addField("Emprego (10 anos):", data.employmentDetails);
+        addTitle("Histórico"); addField("Tuberculose:", `${data.bg_q1} ${data.bg_q1_details ? '- Detalhes: ' + data.bg_q1_details : ''}`); addField("Visto Recusado:", `${data.bg_q2} ${data.bg_q2_details ? '- Detalhes: ' + data.bg_q2_details : ''}`); addField("Crimes:", `${data.bg_q3} ${data.bg_q3_details ? '- Detalhes: ' + data.bg_q3_details : ''}`); addField("Serviço Militar:", `${data.bg_q4} ${data.bg_q4_details ? '- Detalhes: ' + data.bg_q4_details : ''}`);
+        addTitle("Declaração"); addField("Local:", data.signature_location); addField("Data:", new Date().toLocaleDateString('pt-BR')); addField("Termos:", data.agreeTerms ? "Concordou com os termos" : "Não concordou");
     }
-
-    function showSection(sectionIndex) {
-        if (sectionIndex === sections.length - 1) { document.getElementById('declarantName').textContent = document.getElementById('fullName').value || "[Nome não informado]"; }
-        sections.forEach((section, index) => section.classList.toggle('active', index === sectionIndex));
-        updateProgressBar();
-        updateButtons();
-    }
-    function validateForm() {
-        const activeSection = sections[currentSection];
-        for (const input of activeSection.querySelectorAll('[required]')) {
-            if (!input.value) { alert('Por favor, preencha todos os campos obrigatórios.'); input.focus(); return false; }
-        }
-        return true;
-    }
+    function showSection(sectionIndex) { if (sectionIndex === sections.length - 1) { document.getElementById('declarantName').textContent = document.getElementById('fullName').value || "[Nome não informado]"; } sections.forEach((section, index) => section.classList.toggle('active', index === sectionIndex)); updateProgressBar(); updateButtons(); }
+    function validateForm() { const activeSection = sections[currentSection]; for (const input of activeSection.querySelectorAll('[required]')) { if (!input.value) { alert('Por favor, preencha todos os campos obrigatórios.'); input.focus(); return false; } } return true; }
     function updateProgressBar() { progressBar.style.width = ((currentSection) / (sections.length - 1)) * 100 + '%'; }
-    function updateButtons() {
-        document.getElementById('prevBtn').style.display = currentSection === 0 ? 'none' : 'inline-block';
-        document.getElementById('nextBtn').style.display = currentSection === sections.length - 1 ? 'none' : 'inline-block';
-        submitBtn.style.display = currentSection === sections.length - 1 ? 'inline-block' : 'none';
-        if (currentSection === sections.length - 1) { submitBtn.disabled = !agreeCheckbox.checked; }
-    }
-    
-    function setupConditionalLogic(radioGroupName, fieldId) {
-        document.querySelectorAll(`input[type="radio"][name="${radioGroupName}"]`).forEach(radio => {
-            radio.addEventListener('change', e => {
-                const field = document.getElementById(fieldId);
-                const isYes = e.target.value === 'Sim';
-                field.style.display = isYes ? 'block' : 'none';
-                field.querySelectorAll('input, textarea').forEach(input => input.required = isYes);
-            });
-        });
-    }
-
-    // Inicia a lógica condicional e o formulário
-    setupConditionalLogic('usedOtherName', 'otherNameField');
-    setupConditionalLogic('livedOtherCountry', 'previousResidenceField');
-    setupConditionalLogic('hasNationalId', 'nationalIdField');
-    setupConditionalLogic('hasEducation', 'educationField');
+    function updateButtons() { document.getElementById('prevBtn').style.display = currentSection === 0 ? 'none' : 'inline-block'; document.getElementById('nextBtn').style.display = currentSection === sections.length - 1 ? 'none' : 'inline-block'; submitBtn.style.display = currentSection === sections.length - 1 ? 'inline-block' : 'none'; if (currentSection === sections.length - 1) { submitBtn.disabled = !agreeCheckbox.checked; } }
+    function setupConditionalLogic(radioGroupName, fieldId) { document.querySelectorAll(`input[type="radio"][name="${radioGroupName}"]`).forEach(radio => { radio.addEventListener('change', e => { const field = document.getElementById(fieldId); const isYes = e.target.value === 'Sim'; field.style.display = isYes ? 'block' : 'none'; field.querySelectorAll('input, textarea').forEach(input => input.required = isYes); }); }); }
+    setupConditionalLogic('usedOtherName', 'otherNameField'); setupConditionalLogic('livedOtherCountry', 'previousResidenceField'); setupConditionalLogic('hasNationalId', 'nationalIdField'); setupConditionalLogic('hasEducation', 'educationField');
     setupConditionalLogic('bg_q1', 'bg_q1_details'); setupConditionalLogic('bg_q2', 'bg_q2_details'); setupConditionalLogic('bg_q3', 'bg_q3_details'); setupConditionalLogic('bg_q4', 'bg_q4_details');
-    document.getElementById('maritalStatus').addEventListener('change', e => {
-        const value = e.target.value; const field = document.getElementById('spouseDetails');
-        const isNeeded = ['Casado(a)', 'União Estável', 'Divorciado(a)', 'Viúvo(a)'].includes(value);
-        field.style.display = isNeeded ? 'block' : 'none';
-        field.querySelectorAll('input').forEach(input => input.required = isNeeded);
-    });
+    document.getElementById('maritalStatus').addEventListener('change', e => { const value = e.target.value; const field = document.getElementById('spouseDetails'); const isNeeded = ['Casado(a)', 'União Estável', 'Divorciado(a)', 'Viúvo(a)'].includes(value); field.style.display = isNeeded ? 'block' : 'none'; field.querySelectorAll('input').forEach(input => input.required = isNeeded); });
     agreeCheckbox.addEventListener('change', updateButtons);
-    
-    // Inicia o formulário na primeira seção
     showSection(currentSection);
 
 </script>
