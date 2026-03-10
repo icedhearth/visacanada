@@ -56,7 +56,27 @@
         </div>
 
         <div class="form-section">
-            <h2>2. Idiomas e Relacionamento</h2>
+            <h2>2. Escolaridade (Nível de Instrução)</h2>
+            <div class="form-group"><label>Você possui ensino superior ou técnico?</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="hasEducation" id="eduYes" value="Sim"> Sim</label>
+                    <label><input type="radio" name="hasEducation" id="eduNo" value="Não" checked> Não</label>
+                </div>
+            </div>
+            <div id="educationDetails" class="hidden-field">
+                <p class="info-note">Informe o nível mais alto de escolaridade.</p>
+                <div class="form-group"><label>Nome da Instituição</label><input type="text" name="eduSchool"></div>
+                <div class="form-group"><label>Curso/Área de Estudo</label><input type="text" name="eduField"></div>
+                <div class="form-group"><label>Cidade e País</label><input type="text" name="eduCity"></div>
+                <div style="display:flex; gap:10px;">
+                    <div style="flex:1"><label>Data de Início</label><input type="month" name="eduFrom"></div>
+                    <div style="flex:1"><label>Data de Conclusão</label><input type="month" name="eduTo"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2>3. Idiomas e Relacionamento</h2>
             <div class="form-group"><label>Língua Nativa</label><input type="text" name="nativeLang" required></div>
             <div class="form-group"><label>Consegue se comunicar em Inglês ou Francês?</label>
                 <select name="canCommunicate"><option>Ambos</option><option>Inglês</option><option>Francês</option><option>Nenhum</option></select>
@@ -73,7 +93,7 @@
         </div>
 
         <div class="form-section">
-            <h2>3. Documentos de Viagem</h2>
+            <h2>4. Documentos de Viagem</h2>
             <div class="form-group"><label>Número do Passaporte</label><input type="text" name="passportNum" required></div>
             <div class="form-group"><label>País de Emissão</label><input type="text" name="passportCountry" required></div>
             <div class="form-group"><label>Data de Emissão</label><input type="date" name="issueDate" required></div>
@@ -94,7 +114,7 @@
         </div>
 
         <div class="form-section">
-            <h2>4. Ocupação/Emprego (Últimos 10 anos)</h2>
+            <h2>5. Ocupação/Emprego (Últimos 10 anos)</h2>
             <p class="info-note">Comece pelo atual. Não deixe lacunas de tempo.</p>
             <div class="form-group">
                 <label>Ocupação Atual</label>
@@ -125,7 +145,7 @@
         </div>
 
         <div class="form-section">
-            <h2>5. Detalhes da Visita ao Canadá</h2>
+            <h2>6. Detalhes da Visita ao Canadá</h2>
             <div class="form-group"><label>Propósito da Viagem</label>
                 <select name="travelPurpose"><option>Turismo</option><option>Negócios</option><option>Visita a Familiares</option><option>Trânsito</option></select>
             </div>
@@ -139,7 +159,7 @@
         </div>
 
         <div class="form-section">
-            <h2>6. Histórico de Segurança</h2>
+            <h2>7. Histórico de Segurança</h2>
             <p class="info-note">Estas perguntas são cruciais. Responda com honestidade.</p>
             
             <div class="form-group"><label>1. Teve tuberculose ou contato com infectados nos últimos 2 anos?</label>
@@ -216,10 +236,19 @@
         return true;
     }
 
+    // Lógica condicional: Escolaridade
+    document.querySelectorAll('input[name="hasEducation"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            document.getElementById("educationDetails").style.display = e.target.value === "Sim" ? "block" : "none";
+        });
+    });
+
+    // Lógica condicional: Estado Civil
     document.getElementById("maritalStatus").addEventListener("change", (e) => {
         document.getElementById("spouseInfo").style.display = (e.target.value === "Casado(a)" || e.target.value === "União Estável") ? "block" : "none";
     });
 
+    // Lógica condicional: Histórico de Segurança
     document.querySelectorAll(".bg-check").forEach(select => {
         select.addEventListener("change", () => {
             let anyYes = Array.from(document.querySelectorAll(".bg-check")).some(s => s.value === "Sim");
@@ -255,7 +284,7 @@
             const blob = doc.output('blob');
             const fileName = `IMM5257_${data.lastName}_${Date.now()}.pdf`;
             
-            // CORREÇÃO AQUI: Alterado de 'vistos/' para 'pdfs/' para respeitar suas permissões
+            // CORREÇÃO: Mantido em 'pdfs/' para sucesso no upload
             const sRef = ref(storage, `pdfs/${fileName}`);
             
             await uploadBytes(sRef, blob);
