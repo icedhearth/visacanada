@@ -3,209 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulário IMM 5257 (Atualizado) | Objetivo Turismo</title>
+    <title>IMM 5257 Completo | Objetivo Turismo</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; color: #333; }
-        .container { max-width: 850px; margin: 20px auto; background-color: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
-        h1, h2 { text-align: center; color: #1d3557; margin-bottom: 25px; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f4f7f6; margin: 0; padding: 10px; color: #2c3e50; }
+        .container { max-width: 900px; margin: 10px auto; background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { color: #c0392b; border-bottom: 2px solid #c0392b; padding-bottom: 10px; text-align: center; }
+        h2 { background: #ecf0f1; padding: 10px; border-radius: 4px; color: #2980b9; font-size: 1.2rem; margin-top: 30px; }
         .form-section { display: none; }
-        .form-section.active { display: block; animation: fadeIn 0.5s; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .progress-bar { width: 100%; background-color: #e9ecef; border-radius: 5px; margin-bottom: 30px; overflow: hidden; }
-        .progress-bar-fill { height: 12px; width: 0%; background-color: #e63946; border-radius: 5px; transition: width 0.4s ease-in-out; }
-        .form-group { margin-bottom: 22px; }
-        label { display: block; margin-bottom: 8px; font-weight: 600; color: #495057; }
-        input[type="text"], input[type="date"], input[type="email"], input[type="tel"], select, textarea { width: 100%; padding: 12px; border: 1px solid #ced4da; border-radius: 5px; box-sizing: border-box; font-size: 16px; transition: border-color 0.2s; }
-        input:focus, select:focus, textarea:focus { border-color: #e63946; outline: none; box-shadow: 0 0 5px rgba(230, 57, 70, 0.2); }
-        fieldset { border: 1px solid #dee2e6; border-radius: 5px; padding: 20px; margin-bottom: 20px; }
-        legend { font-weight: 700; color: #1d3557; padding: 0 10px; }
-        .radio-group label { display: inline-block; margin-right: 25px; font-weight: normal; }
-        .hidden-field { display: none; margin-top: 15px; border-left: 3px solid #e63946; padding-left: 15px; animation: fadeIn 0.5s; }
-        .navigation-buttons { display: flex; justify-content: space-between; margin-top: 30px; }
-        button { padding: 12px 28px; border: none; border-radius: 5px; background-color: #e63946; color: white; font-size: 16px; font-weight: bold; cursor: pointer; transition: all 0.2s; }
-        button:hover:not(:disabled) { background-color: #d62828; transform: translateY(-2px); }
-        button:disabled { background-color: #adb5bd; cursor: not-allowed; }
-        button#prevBtn { background-color: #6c757d; }
-        button#prevBtn:hover { background-color: #5a6268; }
-        .declaration-box { border: 1px solid #ddd; padding: 15px; margin-top: 20px; background-color: #fafafa; font-size: 14px; max-height: 250px; overflow-y: auto; }
-        .agreement-group { margin-top: 20px; display: flex; align-items: center; }
-        .agreement-group input[type="checkbox"] { width: auto; margin-right: 10px; transform: scale(1.2); }
-        #statusMessage { text-align: center; margin-top: 20px; font-weight: bold; color: #1d3557; min-height: 20px; }
+        .form-section.active { display: block; animation: fadeIn 0.4s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .progress-bar { width: 100%; height: 8px; background: #ddd; border-radius: 4px; margin: 20px 0; }
+        .progress-bar-fill { height: 100%; width: 0%; background: #c0392b; transition: width 0.3s; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 0.95rem; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #bdc3c7; border-radius: 4px; box-sizing: border-box; }
+        .radio-group { display: flex; gap: 20px; padding: 10px 0; }
+        .radio-group label { font-weight: normal; cursor: pointer; }
+        .hidden-field { display: none; background: #f9f9f9; padding: 15px; border-left: 4px solid #3498db; margin-top: 10px; }
+        .nav-btns { display: flex; justify-content: space-between; margin-top: 40px; }
+        button { padding: 12px 30px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        #nextBtn, #submitBtn { background: #c0392b; color: white; }
+        #prevBtn { background: #95a5a6; color: white; }
+        .info-note { font-size: 0.85rem; color: #7f8c8d; margin-top: 5px; font-style: italic; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Formulário de Visto Canadense (IMM 5257)</h1>
+    <h1>Solicitação de Visto (IMM 5257)</h1>
     <div class="progress-bar"><div class="progress-bar-fill" id="progressBar"></div></div>
+
     <form id="imm5257Form">
         <div class="form-section active">
-            <h2>Dados Pessoais</h2>
-            <div class="form-group"><label for="uci">UCI (Unique Client Identifier), se souber</label><input type="text" id="uci" name="uci"></div>
-            <div class="form-group"><label for="fullName">Nome Completo (igual ao passaporte)</label><input type="text" id="fullName" name="fullName" required></div>
-            <div class="form-group"><label>Já usou outro nome?</label>
+            <h2>1. Informações Pessoais</h2>
+            <div class="form-group"><label>UCI (Se possuir)</label><input type="text" name="uci" placeholder="0000-0000"></div>
+            <div class="form-group"><label>Sobrenome(s) (Como no Passaporte)</label><input type="text" name="lastName" required></div>
+            <div class="form-group"><label>Nome(s) (Como no Passaporte)</label><input type="text" name="firstName" required></div>
+            <div class="form-group"><label>Já usou outros nomes (Apelidos, nome de solteiro, etc)?</label>
                 <div class="radio-group">
-                    <label><input type="radio" name="usedOtherName" value="Sim"> Sim</label>
-                    <label><input type="radio" name="usedOtherName" value="Não" checked> Não</label>
+                    <label><input type="radio" name="alias" value="Sim"> Sim</label>
+                    <label><input type="radio" name="alias" value="Não" checked> Não</label>
                 </div>
-                <div id="otherNameField" class="hidden-field"><label for="otherName">Nome Adicional</label><input type="text" id="otherName" name="otherName"></div>
             </div>
-            <div class="form-group"><label for="sex">Sexo</label><select id="sex" name="sex"><option>Feminino</option><option>Masculino</option><option>Outro</option></select></div>
-            <div class="form-group"><label for="dob">Data de Nascimento</label><input type="date" id="dob" name="dob" required></div>
-            <div class="form-group"><label for="cityOfBirth">Cidade/Vila de Nascimento</label><input type="text" id="cityOfBirth" name="cityOfBirth" required></div>
-            <div class="form-group"><label for="countryOfBirth">País de Nascimento</label><input type="text" id="countryOfBirth" name="countryOfBirth" required></div>
-            <div class="form-group"><label for="citizenship">Cidadania</label><input type="text" id="citizenship" name="citizenship" required></div>
+            <div class="form-group"><label>Sexo</label><select name="gender"><option>Feminino</option><option>Masculino</option><option>Outro</option></select></div>
+            <div class="form-group"><label>Data de Nascimento</label><input type="date" name="dob" required></div>
+            <div class="form-group"><label>Cidade de Nascimento</label><input type="text" name="birthCity" required></div>
+            <div class="form-group"><label>País de Nascimento</label><input type="text" name="birthCountry" required></div>
+            <div class="form-group"><label>País de Cidadania</label><input type="text" name="citizenship" required></div>
         </div>
 
         <div class="form-section">
-            <h2>Residência</h2>
-            <fieldset><legend>Residência Atual</legend>
-                <div class="form-group"><label for="currentResidenceCountry">País/Território</label><input type="text" id="currentResidenceCountry" name="currentResidenceCountry" required></div>
-                <div class="form-group"><label for="currentResidenceStatus">Status</label><select id="currentResidenceStatus" name="currentResidenceStatus"><option>Cidadão</option><option>Residente Permanente</option><option>Trabalhador</option><option>Estudante</option><option>Visitante</option><option>Outro</option></select></div>
-            </fieldset>
-            <div class="form-group"><label>Viveu em outro país por mais de 6 meses nos últimos 5 anos?</label>
-                <div class="radio-group">
-                    <label><input type="radio" name="livedOtherCountry" value="Sim"> Sim</label>
-                    <label><input type="radio" name="livedOtherCountry" value="Não" checked> Não</label>
-                </div>
-                <div id="previousResidenceField" class="hidden-field"><label for="previousResidenceDetails">Detalhes dos países anteriores</label><textarea name="previousResidenceDetails" placeholder="Liste cada país, status e período."></textarea></div>
+            <h2>2. Idiomas e Relacionamento</h2>
+            <div class="form-group"><label>Língua Nativa</label><input type="text" name="nativeLang" required></div>
+            <div class="form-group"><label>Consegue se comunicar em Inglês ou Francês?</label>
+                <select name="canCommunicate"><option>Ambos</option><option>Inglês</option><option>Francês</option><option>Nenhum</option></select>
             </div>
-        </div>
-
-        <div class="form-section">
-            <h2>Estado Civil</h2>
-            <div class="form-group"><label for="maritalStatus">Estado Civil Atual</label>
-                <select id="maritalStatus" name="maritalStatus">
-                    <option value="Solteiro(a)">Solteiro(a)</option><option value="Casado(a)">Casado(a)</option><option value="União Estável">União Estável</option><option value="Divorciado(a)">Divorciado(a)</option><option value="Viúvo(a)">Viúvo(a)</option>
+            <div class="form-group"><label>Estado Civil Atual</label>
+                <select name="maritalStatus" id="maritalStatus">
+                    <option>Solteiro(a)</option><option>Casado(a)</option><option>União Estável</option><option>Divorciado(a)</option><option>Viúvo(a)</option><option>Separado(a) Legalmente</option>
                 </select>
             </div>
-            <div id="spouseDetails" class="hidden-field"><fieldset><legend id="spouseLegend">Dados do Cônjuge</legend>
-                    <div class="form-group"><label for="spouseFullName">Nome Completo</label><input type="text" id="spouseFullName" name="spouseFullName"></div>
-                    <div class="form-group"><label for="marriageDate">Data de Início do Casamento/União</label><input type="date" id="marriageDate" name="marriageDate"></div>
-            </fieldset></div>
+            <div id="spouseInfo" class="hidden-field">
+                <label>Nome Completo do Cônjuge/Parceiro</label><input type="text" name="spouseName">
+                <label style="margin-top:10px">Data da União</label><input type="date" name="marriageDate">
+            </div>
         </div>
 
         <div class="form-section">
-            <h2>Passaporte e Documentos</h2>
-            <fieldset><legend>Passaporte</legend>
-                <div class="form-group"><label for="passportNumber">Número do Passaporte</label><input type="text" id="passportNumber" name="passportNumber" required></div>
-                <div class="form-group"><label for="passportCountry">País de Emissão</label><input type="text" id="passportCountry" name="passportCountry" required></div>
-                <div class="form-group"><label for="passportIssueDate">Data de Emissão</label><input type="date" id="passportIssueDate" name="passportIssueDate" required></div>
-                <div class="form-group"><label for="passportExpiryDate">Data de Validade</label><input type="date" id="passportExpiryDate" name="passportExpiryDate" required></div>
-            </fieldset>
+            <h2>3. Documentos de Viagem</h2>
+            <div class="form-group"><label>Número do Passaporte</label><input type="text" name="passportNum" required></div>
+            <div class="form-group"><label>País de Emissão</label><input type="text" name="passportCountry" required></div>
+            <div class="form-group"><label>Data de Emissão</label><input type="date" name="issueDate" required></div>
+            <div class="form-group"><label>Data de Validade</label><input type="date" name="expiryDate" required></div>
             
+            <div class="form-group"><label>Você possui Visto Americano (B1/B2) válido?</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="usVisa" value="Sim"> Sim</label>
+                    <label><input type="radio" name="usVisa" value="Não" checked> Não</label>
+                </div>
+            </div>
+            <div class="form-group"><label>Já teve visto canadense nos últimos 10 anos?</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="canVisa" value="Sim"> Sim</label>
+                    <label><input type="radio" name="canVisa" value="Não" checked> Não</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2>4. Ocupação/Emprego (Últimos 10 anos)</h2>
+            <p class="info-note">Comece pelo atual. Não deixe lacunas de tempo.</p>
             <div class="form-group">
-                <label>Possui visto americano (B1/B2) válido ou teve visto canadense nos últimos 10 anos?</label>
-                <div class="radio-group">
-                    <label><input type="radio" name="hasPreviousVisa" value="Sim"> Sim</label>
-                    <label><input type="radio" name="hasPreviousVisa" value="Não" checked> Não</label>
-                </div>
-                <div id="previousVisaField" class="hidden-field">
-                    <label for="previousVisaDetails">Detalhes do Visto (País, Número e Validade)</label>
-                    <input type="text" id="previousVisaDetails" name="previousVisaDetails">
+                <label>Ocupação Atual</label>
+                <input type="text" name="job1_title" placeholder="Cargo/Função" required>
+                <input type="text" name="job1_company" placeholder="Nome da Empresa/Empregador" style="margin-top:5px" required>
+                <input type="text" name="job1_city" placeholder="Cidade e País" style="margin-top:5px" required>
+                <div style="display:flex; gap:10px; margin-top:5px">
+                    <input type="month" name="job1_from" required> <span>até</span> <input type="text" value="Presente" disabled>
                 </div>
             </div>
-
-            <div class="form-group"><label>Possui Documento de Identidade Nacional (RG)?</label>
-                <div class="radio-group">
-                    <label><input type="radio" name="hasNationalId" value="Sim"> Sim</label>
-                    <label><input type="radio" name="hasNationalId" value="Não" checked> Não</label>
+            <hr>
+            <div class="form-group">
+                <label>Ocupação Anterior</label>
+                <input type="text" name="job2_title" placeholder="Cargo/Função">
+                <input type="text" name="job2_company" placeholder="Nome da Empresa" style="margin-top:5px">
+                <div style="display:flex; gap:10px; margin-top:5px">
+                    <input type="month" name="job2_from"> <span>até</span> <input type="month" name="job2_to">
                 </div>
-                <div id="nationalIdField" class="hidden-field"><label for="nationalIdNumber">Número do Documento</label><input type="text" id="nationalIdNumber" name="nationalIdNumber"></div>
             </div>
-            <div class="form-group"><label>É residente permanente legal dos EUA (possui Green Card)?</label>
-                <div class="radio-group">
-                    <label><input type="radio" name="hasGreenCard" value="Sim"> Sim</label>
-                    <label><input type="radio" name="hasGreenCard" value="Não" checked> Não</label>
+            <div class="form-group">
+                <label>Ocupação Anterior 2</label>
+                <input type="text" name="job3_title" placeholder="Cargo/Função">
+                <input type="text" name="job3_company" placeholder="Nome da Empresa" style="margin-top:5px">
+                <div style="display:flex; gap:10px; margin-top:5px">
+                    <input type="month" name="job3_from"> <span>até</span> <input type="month" name="job3_to">
                 </div>
-                <div id="greenCardField" class="hidden-field"><label for="greenCardNumber">Número do Green Card</label><input type="text" id="greenCardNumber" name="greenCardNumber"></div>
             </div>
         </div>
 
         <div class="form-section">
-             <h2>Informações de Contato</h2>
-            <div class="form-group"><label for="mailingAddress">Endereço de Correspondência</label><textarea id="mailingAddress" name="mailingAddress" required placeholder="Endereço completo com rua, número, bairro, CEP, cidade e país."></textarea></div>
-            <div class="form-group"><label for="phone">Telefone Celular</label><input type="tel" id="phone" name="phone" required></div>
-            <div class="form-group"><label for="email">E-mail</label><input type="email" id="email" name="email" required></div>
-        </div>
-
-        <div class="form-section">
-            <h2>Detalhes da Visita ao Canadá</h2>
-            <div class="form-group"><label for="purpose">Propósito da Visita</label><select id="purpose" name="purpose"><option>Turismo</option><option>Negócios</option><option>Visitar Família/Amigos</option></select></div>
-            <div class="form-group"><label for="itinerary">Breve Roteiro (Cidades que pretende visitar e atividades)</label><textarea id="itinerary" name="itinerary" placeholder="Ex: 3 dias em Toronto, visita às Cataratas e 2 dias em Montreal."></textarea></div>
-            <div class="form-group"><label for="stay_from">Data de Chegada Prevista</label><input type="date" id="stay_from" name="stay_from" required></div>
-            <div class="form-group"><label for="stay_to">Data de Saída Prevista</label><input type="date" id="stay_to" name="stay_to" required></div>
-            <div class="form-group"><label for="funds">Fundos disponíveis para a estadia (CAD)</label><input type="text" id="funds" name="funds" placeholder="Ex: 5000" required></div>
-            <div class="form-group"><label for="visit_person_details">Pessoas ou instituições que irá visitar (Nome, endereço, relação)</label><textarea id="visit_person_details" name="visit_person_details"></textarea></div>
-        </div>
-
-        <div class="form-section">
-            <h2>Educação e Emprego</h2>
-            <div class="form-group"><label>Possui ensino superior ou técnico?</label>
-                <div class="radio-group">
-                    <label><input type="radio" name="hasEducation" value="Sim"> Sim</label>
-                    <label><input type="radio" name="hasEducation" value="Não" checked> Não</label>
-                </div>
-                <div id="educationField" class="hidden-field"><label for="educationDetails">Detalhes da Educação</label><textarea name="educationDetails" placeholder="Liste curso, escola, cidade, período."></textarea></div>
+            <h2>5. Detalhes da Visita ao Canadá</h2>
+            <div class="form-group"><label>Propósito da Viagem</label>
+                <select name="travelPurpose"><option>Turismo</option><option>Negócios</option><option>Visita a Familiares</option><option>Trânsito</option></select>
             </div>
-            <div class="form-group"><label for="employmentDetails">Histórico de Emprego (últimos 10 anos)</label><textarea id="employmentDetails" name="employmentDetails" placeholder="Liste cada emprego (período, cargo, empregador, cidade), incluindo períodos de desemprego ou estudo." required></textarea></div>
+            <div class="form-group"><label>Fundos disponíveis para a viagem (CAD$)</label><input type="number" name="funds" required></div>
+            <div class="form-group"><label>Contatos no Canadá (Instituição ou Pessoa)</label>
+                <textarea name="canContact" placeholder="Nome, endereço e relação (se houver)"></textarea>
+            </div>
+            <div class="form-group"><label>Roteiro Resumido</label>
+                <textarea name="itinerary" placeholder="Cidades e principais atrações"></textarea>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2>6. Histórico de Segurança</h2>
+            <p class="info-note">Estas perguntas são cruciais. Responda com honestidade.</p>
             
-            <div class="form-group">
-                <label>Possui bens imóveis ou veículos no Brasil?</label>
-                <div class="radio-group">
-                    <label><input type="radio" name="hasAssets" value="Sim"> Sim</label>
-                    <label><input type="radio" name="hasAssets" value="Não" checked> Não</label>
-                </div>
-                <div id="assetsField" class="hidden-field">
-                    <label for="assetsDetails">Liste os principais bens (Ex: Apartamento em Brasília, Carro 2023)</label>
-                    <textarea name="assetsDetails" id="assetsDetails"></textarea>
-                </div>
+            <div class="form-group"><label>1. Teve tuberculose ou contato com infectados nos últimos 2 anos?</label>
+                <select name="bg1" class="bg-check"><option value="Não">Não</option><option value="Sim">Sim</option></select>
+            </div>
+            <div class="form-group"><label>2. Tem algum distúrbio físico ou mental que exija cuidados sociais/médicos?</label>
+                <select name="bg2" class="bg-check"><option value="Não">Não</option><option value="Sim">Sim</option></select>
+            </div>
+            <div class="form-group"><label>3. Já permaneceu no Canadá ilegalmente ou trabalhou sem permissão?</label>
+                <select name="bg3" class="bg-check"><option value="Não">Não</option><option value="Sim">Sim</option></select>
+            </div>
+            <div class="form-group"><label>4. Já teve visto negado (qualquer país) ou foi deportado?</label>
+                <select name="bg4" class="bg-check"><option value="Não">Não</option><option value="Sim">Sim</option></select>
+            </div>
+            <div class="form-group"><label>5. Já cometeu ou foi acusado de algum crime em qualquer país?</label>
+                <select name="bg5" class="bg-check"><option value="Não">Não</option><option value="Sim">Sim</option></select>
+            </div>
+            <div class="form-group"><label>6. Serviu nas forças armadas, polícia ou grupos de inteligência?</label>
+                <select name="bg6" class="bg-check"><option value="Não">Não</option><option value="Sim">Sim</option></select>
+            </div>
+            <div id="bgDetails" class="hidden-field">
+                <label>Para qualquer resposta "Sim" acima, forneça detalhes (Datas, Países, Motivos):</label>
+                <textarea name="bgExplanation"></textarea>
             </div>
         </div>
 
-        <div class="form-section">
-            <h2>Informações de Histórico (Background)</h2>
-            <p>Responda "Sim" ou "Não". Se responder "Sim", forneça detalhes.</p>
-            <div class="form-group"><label>1. Você ou um familiar teve tuberculose nos últimos 2 anos?</label><div class="radio-group"><label><input type="radio" name="bg_q1" value="Sim"> Sim</label><label><input type="radio" name="bg_q1" value="Não" checked> Não</label></div>
-                <textarea name="bg_q1_details" class="hidden-field" placeholder="Forneça detalhes."></textarea>
-            </div>
-             <div class="form-group"><label>2. Já permaneceu no Canadá além da validade do seu status, ou trabalhou/estudou sem permissão?</label><div class="radio-group"><label><input type="radio" name="bg_q2" value="Sim"> Sim</label><label><input type="radio" name="bg_q2" value="Não" checked> Não</label></div>
-                <textarea name="bg_q2_details" class="hidden-field" placeholder="Forneça detalhes."></textarea>
-            </div>
-            <div class="form-group"><label>3. Já teve um visto ou entrada recusada para o Canadá ou qualquer outro país?</label><div class="radio-group"><label><input type="radio" name="bg_q3" value="Sim"> Sim</label><label><input type="radio" name="bg_q3" value="Não" checked> Não</label></div>
-                <textarea name="bg_q3_details" class="hidden-field" placeholder="Qual país, quando e o motivo."></textarea>
-            </div>
-            <div class="form-group"><label>4. Já cometeu, foi preso(a), acusado(a) ou condenado(a) por crime em qualquer país?</label><div class="radio-group"><label><input type="radio" name="bg_q4" value="Sim"> Sim</label><label><input type="radio" name="bg_q4" value="Não" checked> Não</label></div>
-                <textarea name="bg_q4_details" class="hidden-field" placeholder="Forneça detalhes completos."></textarea>
-            </div>
-            <div class="form-group"><label>5. Serviu em alguma organização militar, milícia, polícia ou grupo de defesa civil?</label><div class="radio-group"><label><input type="radio" name="bg_q5" value="Sim"> Sim</label><label><input type="radio" name="bg_q5" value="Não" checked> Não</label></div>
-                <textarea name="bg_q5_details" class="hidden-field" placeholder="Quais datas, país e detalhes da sua função."></textarea>
-            </div>
+        <div class="nav-btns">
+            <button type="button" id="prevBtn" onclick="move(-1)">Anterior</button>
+            <button type="button" id="nextBtn" onclick="move(1)">Próximo</button>
+            <button type="button" id="submitBtn" style="display:none" onclick="finalize()">Finalizar e Enviar para Objetivo Turismo</button>
         </div>
-
-        <div class="form-section">
-            <h2>Declaração e Autorização</h2>
-            <div class="declaration-box">
-                <h4>Declaração</h4>
-                <p>Eu, <strong id="declarantName"></strong>, declaro, sob as penas da lei, que as respostas por mim fornecidas são verdadeiras e completas. Autorizo a <strong>Objetivo Turismo</strong> a processar meus dados para fins de assessoria de visto.</p>
-            </div>
-            <div class="form-group"><label for="signature_location">Local</label><input type="text" id="signature_location" name="signature_location" required></div>
-            <div class="agreement-group"><input type="checkbox" id="agreeTerms"><label for="agreeTerms">Li e concordo com os termos desta declaração.</label></div>
-        </div>
-
-        <div class="navigation-buttons">
-            <button type="button" id="prevBtn" onclick="navigate(-1)">Anterior</button>
-            <button type="button" id="nextBtn" onclick="navigate(1)">Próximo</button>
-            <button type="button" id="submitBtn" onclick="generateAndSend()">Gerar PDF e Enviar para Análise</button>
-        </div>
-        <div id="statusMessage"></div>
     </form>
 </div>
 
 <script type="module">
+    // IMPORTANTE: Use as credenciais do seu Firebase aqui
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
     import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-storage.js";
 
@@ -215,144 +185,91 @@
         projectId: "visaformulariostorage",
         storageBucket: "visaformulariostorage.firebasestorage.app",
         messagingSenderId: "720170394408",
-        appId: "1:720170394408:web:b1c294c39c489388f6261d",
-        measurementId: "G-ZFCV4JEEFT"
+        appId: "1:720170394408:web:b1c294c39c489388f6261d"
     };
 
     const app = initializeApp(firebaseConfig);
     const storage = getStorage(app);
     const { jsPDF } = window.jspdf;
 
-    let currentSection = 0;
-    const sections = document.querySelectorAll('.form-section');
-    const progressBar = document.getElementById('progressBar');
-    const submitBtn = document.getElementById('submitBtn');
-    const agreeCheckbox = document.getElementById('agreeTerms');
-    const statusMessage = document.getElementById('statusMessage');
-    
-    window.navigate = function(step) {
-        if (step === 1 && !validateForm()) return;
-        currentSection = Math.max(0, Math.min(sections.length - 1, currentSection + step));
-        showSection(currentSection);
+    let step = 0;
+    const steps = document.querySelectorAll(".form-section");
+    const progress = document.getElementById("progressBar");
+
+    window.move = (dir) => {
+        if (dir === 1 && !validate()) return;
+        steps[step].classList.remove("active");
+        step += dir;
+        steps[step].classList.add("active");
+        updateUI();
+    };
+
+    function updateUI() {
+        progress.style.width = ((step / (steps.length - 1)) * 100) + "%";
+        document.getElementById("prevBtn").style.display = step === 0 ? "none" : "block";
+        document.getElementById("nextBtn").style.display = step === steps.length - 1 ? "none" : "block";
+        document.getElementById("submitBtn").style.display = step === steps.length - 1 ? "block" : "none";
     }
 
-    window.generateAndSend = async function() {
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Processando...';
-        statusMessage.textContent = 'Iniciando...';
-        
-        const whatsappWindow = window.open('', '_blank');
+    function validate() {
+        const inputs = steps[step].querySelectorAll("input[required], select[required]");
+        for (let i of inputs) if (!i.value) { alert("Campo obrigatório!"); i.focus(); return false; }
+        return true;
+    }
+
+    // Lógica de campos condicionais
+    document.getElementById("maritalStatus").addEventListener("change", (e) => {
+        document.getElementById("spouseInfo").style.display = (e.target.value === "Casado(a)" || e.target.value === "União Estável") ? "block" : "none";
+    });
+
+    document.querySelectorAll(".bg-check").forEach(select => {
+        select.addEventListener("change", () => {
+            let anyYes = Array.from(document.querySelectorAll(".bg-check")).some(s => s.value === "Sim");
+            document.getElementById("bgDetails").style.display = anyYes ? "block" : "none";
+        });
+    });
+
+    window.finalize = async () => {
+        const btn = document.getElementById("submitBtn");
+        btn.disabled = true;
+        btn.textContent = "Gerando PDF...";
         
         try {
-            const data = Object.fromEntries(new FormData(document.getElementById('imm5257Form')).entries());
-            const doc = new jsPDF({ lineHeight: 1.5 });
+            const form = document.getElementById("imm5257Form");
+            const fd = new FormData(form);
+            const data = Object.fromEntries(fd.entries());
             
-            populatePdf(doc, data);
-
-            const solicitanteNome = data.fullName || 'Nao_Informado';
-            const timestamp = Date.now();
-            const pdfBlob = doc.output('blob');
-            const firebaseFileName = `pdfs/IMM5257_${solicitanteNome.replace(/\s+/g, '_')}_${timestamp}.pdf`;
-
-            const storageRef = ref(storage, firebaseFileName);
-            await uploadBytes(storageRef, pdfBlob);
-            const downloadUrl = await getDownloadURL(storageRef);
+            const doc = new jsPDF();
+            doc.setFontSize(16);
+            doc.text("Coleta de Dados IMM 5257 - Objetivo Turismo", 20, 20);
+            doc.setFontSize(10);
             
-            const whatsappMessage = `Análise de Visto Canadense para ${solicitanteNome} está pronta.\n\nAcesse o formulário seguro no link: ${downloadUrl}`;
-            const fixedWhatsAppNumber = '5561999998165';
-            whatsappWindow.location.href = `https://api.whatsapp.com/send?phone=${fixedWhatsAppNumber}&text=${encodeURIComponent(whatsappMessage)}`;
-
-        } catch (error) {
-            statusMessage.textContent = `Erro: ${error.message}`;
-            if (whatsappWindow) whatsappWindow.close();
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Gerar PDF e Enviar para Análise';
-        }
-    }
-    
-    function populatePdf(doc, data) {
-        let y = 20;
-        const pageHeight = doc.internal.pageSize.height;
-        const leftMargin = 14;
-        const indent = 18;
-        const usableWidth = doc.internal.pageSize.width - leftMargin - indent;
-
-        const checkPageBreak = (neededHeight) => {
-            if (y + neededHeight > pageHeight - 20) { doc.addPage(); y = 20; }
-        };
-
-        const addTitle = (title) => {
-            checkPageBreak(12);
-            doc.setFontSize(14).setFont(undefined, 'bold');
-            doc.text(title, leftMargin, y);
-            y += 10;
-        };
-
-        const addField = (label, value) => {
-            if (value && value.trim() !== '') {
-                const valueLines = doc.splitTextToSize(value, usableWidth);
-                const neededHeight = (valueLines.length * 5) + 10;
-                checkPageBreak(neededHeight);
-                doc.setFontSize(11).setFont(undefined, 'bold');
-                doc.text(label, leftMargin, y);
-                y += 6;
-                doc.setFontSize(10).setFont(undefined, 'normal');
-                doc.text(valueLines, indent, y);
-                y += (valueLines.length * 5) + 4;
+            let y = 35;
+            for (let [key, val] of Object.entries(data)) {
+                if (y > 270) { doc.addPage(); y = 20; }
+                doc.setFont(undefined, 'bold');
+                doc.text(`${key}:`, 20, y);
+                doc.setFont(undefined, 'normal');
+                doc.text(`${val}`, 70, y);
+                y += 7;
             }
-        };
-        
-        addTitle("Respostas - Formulário IMM 5257 (Objetivo Turismo)");
-        addTitle("Dados Pessoais");
-        addField("Nome Completo:", data.fullName); addField("UCI:", data.uci); addField("Sexo:", data.sex); addField("Data de Nasc.:", data.dob);
-        
-        addTitle("Residência e Documentos");
-        addField("País de Residência:", data.currentResidenceCountry); addField("No. Passaporte:", data.passportNumber);
-        addField("Visto EUA/Canadá Anterior:", `${data.hasPreviousVisa || 'Não'} - ${data.previousVisaDetails || ''}`);
-        addField("ID Nacional (RG):", data.nationalIdNumber);
-        
-        addTitle("Contato e Visita");
-        addField("E-mail:", data.email); addField("Telefone:", data.phone);
-        addField("Roteiro Previsto:", data.itinerary);
-        addField("Período:", `${data.stay_from || ''} a ${data.stay_to || ''}`); addField("Fundos (CAD):", data.funds);
-        
-        addTitle("Educação, Emprego e Bens");
-        addField("Educação:", data.educationDetails); addField("Emprego (10 anos):", data.employmentDetails);
-        addField("Bens/Vínculos no Brasil:", `${data.hasAssets || 'Não'} - ${data.assetsDetails || ''}`);
-        
-        addTitle("Histórico (Background)");
-        addField("Visto Recusado?:", `${data.bg_q3} ${data.bg_q3_details || ''}`);
-        addField("Crimes?:", `${data.bg_q4} ${data.bg_q4_details || ''}`);
-        
-        addTitle("Assinatura");
-        addField("Local:", data.signature_location); addField("Data:", new Date().toLocaleDateString('pt-BR'));
-    }
-    
-    function showSection(sectionIndex) { 
-        if (sectionIndex === sections.length - 1) { document.getElementById('declarantName').textContent = document.getElementById('fullName').value || "[Nome]"; }
-        sections.forEach((section, index) => section.classList.toggle('active', index === sectionIndex));
-        updateProgressBar(); updateButtons();
-    }
-    function validateForm() { const activeSection = sections[currentSection]; for (const input of activeSection.querySelectorAll('[required]')) { if (!input.value) { alert('Preencha os campos obrigatórios.'); input.focus(); return false; } } return true; }
-    function updateProgressBar() { progressBar.style.width = ((currentSection) / (sections.length - 1)) * 100 + '%'; }
-    function updateButtons() { document.getElementById('prevBtn').style.display = currentSection === 0 ? 'none' : 'inline-block'; document.getElementById('nextBtn').style.display = currentSection === sections.length - 1 ? 'none' : 'inline-block'; submitBtn.style.display = currentSection === sections.length - 1 ? 'inline-block' : 'none'; if (currentSection === sections.length - 1) { submitBtn.disabled = !agreeCheckbox.checked; } }
-    
-    function setupConditionalLogic(radioGroupName, fieldId) { document.querySelectorAll(`input[type="radio"][name="${radioGroupName}"]`).forEach(radio => { radio.addEventListener('change', e => { const field = document.getElementById(fieldId); const isYes = e.target.value === 'Sim'; field.style.display = isYes ? 'block' : 'none'; }); }); }
-    
-    setupConditionalLogic('usedOtherName', 'otherNameField');
-    setupConditionalLogic('livedOtherCountry', 'previousResidenceField');
-    setupConditionalLogic('hasNationalId', 'nationalIdField');
-    setupConditionalLogic('hasGreenCard', 'greenCardField');
-    setupConditionalLogic('hasEducation', 'educationField');
-    setupConditionalLogic('hasPreviousVisa', 'previousVisaField');
-    setupConditionalLogic('hasAssets', 'assetsField');
-    setupConditionalLogic('bg_q1', 'bg_q1_details'); setupConditionalLogic('bg_q2', 'bg_q2_details'); setupConditionalLogic('bg_q3', 'bg_q3_details'); setupConditionalLogic('bg_q4', 'bg_q4_details'); setupConditionalLogic('bg_q5', 'bg_q5_details');
-    
-    document.getElementById('maritalStatus').addEventListener('change', e => { document.getElementById('spouseDetails').style.display = ['Casado(a)', 'União Estável'].includes(e.target.value) ? 'block' : 'none'; });
-    agreeCheckbox.addEventListener('change', updateButtons);
-    showSection(currentSection);
-</script>
 
+            const blob = doc.output('blob');
+            const fileName = `IMM5257_${data.lastName}_${Date.now()}.pdf`;
+            const sRef = ref(storage, `vistos/${fileName}`);
+            
+            await uploadBytes(sRef, blob);
+            const url = await getDownloadURL(sRef);
+            
+            const msg = `Olá Objetivo Turismo, meu formulário IMM 5257 está pronto: ${url}`;
+            window.open(`https://api.whatsapp.com/send?phone=5561999998165&text=${encodeURIComponent(msg)}`);
+        } catch (e) {
+            alert("Erro ao enviar: " + e.message);
+        } finally {
+            btn.disabled = false;
+            btn.textContent = "Finalizar e Enviar";
+        }
+    };
+</script>
 </body>
 </html>
