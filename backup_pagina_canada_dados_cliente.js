@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
-import { getStorage, ref, uploadBytes } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-storage.js";
+import { getStorage, getDownloadURL, ref, uploadBytes } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-storage.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyAkBV0rHEghBOHl2mDOs6rMDHkUgYMxFr0",
@@ -18,6 +18,7 @@ const form = document.getElementById("immForm");
 const submitBtn = document.getElementById("submitBtn");
 const clearBtn = document.getElementById("clearBtn");
 const statusBox = document.getElementById("statusBox");
+const WHATSAPP_NUMBER = "556199998165";
 
 const clean = (v) => String(v || "").replace(/\r?\n+/g, " / ").replace(/[ \t]+/g, " ").trim();
 const slug = (v) => clean(v).normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9_-]+/g, "_").replace(/^_+|_+$/g, "") || "cliente";
@@ -326,7 +327,7 @@ function generatePdfBlob() {
     [line("Proposito principal", clean(r.travelPurpose)), line("Chegada prevista", formatDateBr(d.travelFrom)), line("Saida prevista", formatDateBr(d.travelTo)), line("Fundos disponiveis (CAD)", d.funds), line("Quem paga a viagem", d.payerTrip), line("Acompanhantes", d.travelCompanion), line("Contato no Canada", d.canContactName), line("Relacao com o contato", d.canContactRelationship), line("Endereco do contato", d.canContactAddress), line("Telefone do contato", d.canContactPhone), line("Provincia / cidade principal", d.intendedProvince), line("Roteiro resumido", d.itinerary), line("Detalhes adicionais", d.travelPurposeOther)].forEach((item) => addPdfText(doc, state, item));
 
     addPdfSection(doc, state, "Trabalho e estudos");
-    [line("Cargo atual", d.job1_title), line("Empresa atual", d.job1_company), line("Cidade / pais atual", d.job1_city), line("Inicio atual", d.job1_from), line("Historico 1", `${d.job2_title} | ${d.job2_company} | ${d.job2_city} | ${d.job2_from} a ${d.job2_to}`), line("Historico 2", `${d.job3_title} | ${d.job3_company} | ${d.job3_city} | ${d.job3_from} a ${d.job3_to}`), line("Historico 3", `${d.job4_title} | ${d.job4_company} | ${d.job4_city} | ${d.job4_from} a ${d.job4_to}`), line("Estudo apos o ensino medio", d.hasEducation === "Yes" ? "Sim" : "Nao"), line("Nivel mais alto", d.eduLevel), line("Instituicao", d.eduSchool), line("Curso / area", d.eduField), line("Cidade", d.eduCity), line("Estado / provincia", d.eduProvince), line("Pais", d.eduCountry), line("Periodo de estudo", `${d.eduFrom} a ${d.eduTo}`)].forEach((item) => addPdfText(doc, state, item));
+    [line("Cargo atual", d.job1_title), line("Empresa atual", d.job1_company), line("Cidade / pais atual", d.job1_city), line("Inicio atual", d.job1_from), line("Historico 1", `${d.job2_title} | ${d.job2_company} | ${d.job2_city} | ${d.job2_from} a ${d.job2_to}`), line("Historico 2", `${d.job3_title} | ${d.job3_company} | ${d.job3_city} | ${d.job3_from} a ${d.job3_to}`), line("Historico 3", `${d.job4_title} | ${d.job4_company} | ${d.job4_city} | ${d.job4_from} a ${d.job4_to}`), line("Historico de estudos informado", d.hasEducation === "Yes" ? "Sim" : "Nao"), line("Nivel mais alto", d.eduLevel), line("Instituicao", d.eduSchool), line("Curso / area", d.eduField), line("Cidade", d.eduCity), line("Estado / provincia", d.eduProvince), line("Pais", d.eduCountry), line("Periodo de estudo", `${d.eduFrom} a ${d.eduTo}`)].forEach((item) => addPdfText(doc, state, item));
 
     addPdfSection(doc, state, "Seguranca e antecedentes");
     [line("Tuberculose ou contato proximo", clean(r.bg1)), line("Condicao medica ou mental relevante", clean(r.bg2)), line("Excedeu permanencia ou trabalhou sem permissao", clean(r.bg3)), line("Visto negado ou entrada recusada", clean(r.bg4)), line("Prisao, acusacao ou condenacao", clean(r.bg5)), line("Servico militar ou policial", clean(r.bg6)), line("Grupo associado a violencia", clean(r.bg7)), line("Abuso contra civis ou prisioneiros", clean(r.bg8)), line("Detalhes", d.bgExplanation)].forEach((item) => addPdfText(doc, state, item));
@@ -365,10 +366,21 @@ async function handleSubmit(event) {
         const pdfBlob = generatePdfBlob();
         const timestamp = Date.now();
         const applicantSlug = `${slug(d.lastName)}_${slug(d.firstName)}`;
+        const storageBase = `pdfs/imm5257_${applicantSlug}_${timestamp}`;
+        const pdfRef = ref(storage, `${storageBase}.pdf`);
+        const txtRef = ref(storage, `${storageBase}.txt`);
         await Promise.all([
-            uploadBytes(ref(storage, `canada/pdfs/imm5257_${applicantSlug}_${timestamp}.pdf`), pdfBlob, { contentType: "application/pdf" }),
-            uploadBytes(ref(storage, `canada/txt/imm5257_${applicantSlug}_${timestamp}.txt`), txtBlob, { contentType: "text/plain" })
+            uploadBytes(pdfRef, pdfBlob, { contentType: "application/pdf" }),
+            uploadBytes(txtRef, txtBlob, { contentType: "text/plain" })
         ]);
+        const pdfUrl = await getDownloadURL(pdfRef);
+        const fullName = `${clean(d.firstName)} ${clean(d.lastName)}`.trim();
+        const waText = [
+            "Novo formulario de visto canadense.",
+            fullName ? `Cliente: ${fullName}` : "",
+            `PDF: ${pdfUrl}`
+        ].filter(Boolean).join("\n");
+        window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waText)}`, "_blank", "noopener");
         setStatus("success", "Formulario enviado com sucesso. Seus dados foram registrados.");
         form.reset();
         document.querySelector('input[name="alias"][value="Nao"]').checked = true;
