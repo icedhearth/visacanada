@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IMM 5257 Completo | Objetivo Turismo</title>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f4f7f6; margin: 0; padding: 10px; color: #2c3e50; }
         .container { max-width: 900px; margin: 10px auto; background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
@@ -42,12 +40,6 @@
             <div class="form-group"><label>UCI (Se possuir)</label><input type="text" name="uci" placeholder="0000-0000"></div>
             <div class="form-group"><label>Sobrenome(s) (Como no Passaporte)</label><input type="text" name="lastName" required></div>
             <div class="form-group"><label>Nome(s) (Como no Passaporte)</label><input type="text" name="firstName" required></div>
-            <div class="form-group"><label>Já usou outros nomes (Apelidos, nome de solteiro, etc)?</label>
-                <div class="radio-group">
-                    <label><input type="radio" name="alias" value="Sim"> Sim</label>
-                    <label><input type="radio" name="alias" value="Não" checked> Não</label>
-                </div>
-            </div>
             <div class="form-group"><label>Sexo</label><select name="gender"><option>Feminino</option><option>Masculino</option><option>Outro</option></select></div>
             <div class="form-group"><label>Data de Nascimento</label><input type="date" name="dob" required></div>
             <div class="form-group"><label>Cidade de Nascimento</label><input type="text" name="birthCity" required></div>
@@ -56,140 +48,46 @@
         </div>
 
         <div class="form-section">
-            <h2>2. Escolaridade (Nível de Instrução)</h2>
-            <div class="form-group"><label>Você possui ensino superior ou técnico?</label>
+            <h2>2. Escolaridade</h2>
+            <div class="form-group"><label>Possui ensino superior ou técnico?</label>
                 <div class="radio-group">
-                    <label><input type="radio" name="hasEducation" id="eduYes" value="Sim"> Sim</label>
-                    <label><input type="radio" name="hasEducation" id="eduNo" value="Não" checked> Não</label>
+                    <label><input type="radio" name="hasEducation" value="Sim"> Sim</label>
+                    <label><input type="radio" name="hasEducation" value="Não" checked> Não</label>
                 </div>
             </div>
             <div id="educationDetails" class="hidden-field">
-                <p class="info-note">Informe o nível mais alto de escolaridade.</p>
                 <div class="form-group"><label>Nome da Instituição</label><input type="text" name="eduSchool"></div>
-                <div class="form-group"><label>Curso/Área de Estudo</label><input type="text" name="eduField"></div>
-                <div class="form-group"><label>Cidade e País</label><input type="text" name="eduCity"></div>
+                <div class="form-group"><label>Curso/Área</label><input type="text" name="eduField"></div>
                 <div style="display:flex; gap:10px;">
-                    <div style="flex:1"><label>Data de Início</label><input type="month" name="eduFrom"></div>
-                    <div style="flex:1"><label>Data de Conclusão</label><input type="month" name="eduTo"></div>
+                    <div style="flex:1"><label>Início</label><input type="month" name="eduFrom"></div>
+                    <div style="flex:1"><label>Fim</label><input type="month" name="eduTo"></div>
                 </div>
             </div>
         </div>
 
         <div class="form-section">
-            <h2>3. Idiomas e Relacionamento</h2>
-            <div class="form-group"><label>Língua Nativa</label><input type="text" name="nativeLang" required></div>
-            <div class="form-group"><label>Consegue se comunicar em Inglês ou Francês?</label>
-                <select name="canCommunicate"><option>Ambos</option><option>Inglês</option><option>Francês</option><option>Nenhum</option></select>
-            </div>
-            <div class="form-group"><label>Estado Civil Atual</label>
-                <select name="maritalStatus" id="maritalStatus">
-                    <option>Solteiro(a)</option><option>Casado(a)</option><option>União Estável</option><option>Divorciado(a)</option><option>Viúvo(a)</option><option>Separado(a) Legalmente</option>
-                </select>
-            </div>
-            <div id="spouseInfo" class="hidden-field">
-                <label>Nome Completo do Cônjuge/Parceiro</label><input type="text" name="spouseName">
-                <label style="margin-top:10px">Data da União</label><input type="date" name="marriageDate">
-            </div>
-        </div>
-
-        <div class="form-section">
-            <h2>4. Documentos de Viagem</h2>
+            <h2>3. Documentos de Viagem</h2>
             <div class="form-group"><label>Número do Passaporte</label><input type="text" name="passportNum" required></div>
-            <div class="form-group"><label>País de Emissão</label><input type="text" name="passportCountry" required></div>
             <div class="form-group"><label>Data de Emissão</label><input type="date" name="issueDate" required></div>
             <div class="form-group"><label>Data de Validade</label><input type="date" name="expiryDate" required></div>
-            
-            <div class="form-group"><label>Você possui Visto Americano (B1/B2) válido?</label>
-                <div class="radio-group">
-                    <label><input type="radio" name="usVisa" value="Sim"> Sim</label>
-                    <label><input type="radio" name="usVisa" value="Não" checked> Não</label>
-                </div>
-            </div>
-            <div class="form-group"><label>Já teve visto canadense nos últimos 10 anos?</label>
-                <div class="radio-group">
-                    <label><input type="radio" name="canVisa" value="Sim"> Sim</label>
-                    <label><input type="radio" name="canVisa" value="Não" checked> Não</label>
-                </div>
-            </div>
         </div>
 
         <div class="form-section">
-            <h2>5. Ocupação/Emprego (Últimos 10 anos)</h2>
-            <p class="info-note">Comece pelo atual. Não deixe lacunas de tempo.</p>
+            <h2>4. Ocupação (Última)</h2>
             <div class="form-group">
-                <label>Ocupação Atual</label>
-                <input type="text" name="job1_title" placeholder="Cargo/Função" required>
-                <input type="text" name="job1_company" placeholder="Nome da Empresa/Empregador" style="margin-top:5px" required>
-                <input type="text" name="job1_city" placeholder="Cidade e País" style="margin-top:5px" required>
-                <div style="display:flex; gap:10px; margin-top:5px">
-                    <input type="month" name="job1_from" required> <span>até</span> <input type="text" value="Presente" disabled>
-                </div>
-            </div>
-            <hr>
-            <div class="form-group">
-                <label>Ocupação Anterior</label>
-                <input type="text" name="job2_title" placeholder="Cargo/Função">
-                <input type="text" name="job2_company" placeholder="Nome da Empresa" style="margin-top:5px">
-                <div style="display:flex; gap:10px; margin-top:5px">
-                    <input type="month" name="job2_from"> <span>até</span> <input type="month" name="job2_to">
-                </div>
-            </div>
-            <div class="form-group">
-                <label>Ocupação Anterior 2</label>
-                <input type="text" name="job3_title" placeholder="Cargo/Função">
-                <input type="text" name="job3_company" placeholder="Nome da Empresa" style="margin-top:5px">
-                <div style="display:flex; gap:10px; margin-top:5px">
-                    <input type="month" name="job3_from"> <span>até</span> <input type="month" name="job3_to">
-                </div>
-            </div>
-        </div>
-
-        <div class="form-section">
-            <h2>6. Detalhes da Visita ao Canadá</h2>
-            <div class="form-group"><label>Propósito da Viagem</label>
-                <select name="travelPurpose"><option>Turismo</option><option>Negócios</option><option>Visita a Familiares</option><option>Trânsito</option></select>
-            </div>
-            <div class="form-group"><label>Fundos disponíveis para a viagem (CAD$)</label><input type="number" name="funds" required></div>
-            <div class="form-group"><label>Contatos no Canadá (Instituição ou Pessoa)</label>
-                <textarea name="canContact" placeholder="Nome, endereço e relação (se houver)"></textarea>
-            </div>
-            <div class="form-group"><label>Roteiro Resumido</label>
-                <textarea name="itinerary" placeholder="Cidades e principais atrações"></textarea>
-            </div>
-        </div>
-
-        <div class="form-section">
-            <h2>7. Histórico de Segurança</h2>
-            <p class="info-note">Estas perguntas são cruciais. Responda com honestidade.</p>
-            
-            <div class="form-group"><label>1. Teve tuberculose ou contato com infectados nos últimos 2 anos?</label>
-                <select name="bg1" class="bg-check"><option value="Não">Não</option><option value="Sim">Sim</option></select>
-            </div>
-            <div class="form-group"><label>2. Tem algum distúrbio físico ou mental que exija cuidados sociais/médicos?</label>
-                <select name="bg2" class="bg-check"><option value="Não">Não</option><option value="Sim">Sim</option></select>
-            </div>
-            <div class="form-group"><label>3. Já permaneceu no Canadá ilegalmente ou trabalhou sem permissão?</label>
-                <select name="bg3" class="bg-check"><option value="Não">Não</option><option value="Sim">Sim</option></select>
-            </div>
-            <div class="form-group"><label>4. Já teve visto negado (qualquer país) ou foi deportado?</label>
-                <select name="bg4" class="bg-check"><option value="Não">Não</option><option value="Sim">Sim</option></select>
-            </div>
-            <div class="form-group"><label>5. Já cometeu ou foi acusado de algum crime em qualquer país?</label>
-                <select name="bg5" class="bg-check"><option value="Não">Não</option><option value="Sim">Sim</option></select>
-            </div>
-            <div class="form-group"><label>6. Serviu nas forças armadas, polícia ou grupos de inteligência?</label>
-                <select name="bg6" class="bg-check"><option value="Não">Não</option><option value="Sim">Sim</option></select>
-            </div>
-            <div id="bgDetails" class="hidden-field">
-                <label>Para qualquer resposta "Sim" acima, forneça detalhes (Datas, Países, Motivos):</label>
-                <textarea name="bgExplanation"></textarea>
+                <label>Cargo Atual</label>
+                <input type="text" name="job1_title" required>
+                <label>Empresa</label>
+                <input type="text" name="job1_company" required>
+                <label>Desde</label>
+                <input type="month" name="job1_from" required>
             </div>
         </div>
 
         <div class="nav-btns">
             <button type="button" id="prevBtn" onclick="move(-1)">Anterior</button>
             <button type="button" id="nextBtn" onclick="move(1)">Próximo</button>
-            <button type="button" id="submitBtn" style="display:none" onclick="finalize()">Finalizar e Enviar para Objetivo Turismo</button>
+            <button type="button" id="submitBtn" style="display:none" onclick="finalize()">Finalizar e Enviar</button>
         </div>
     </form>
 </div>
@@ -216,7 +114,6 @@
     const progress = document.getElementById("progressBar");
 
     window.move = (dir) => {
-        if (dir === 1 && !validate()) return;
         steps[step].classList.remove("active");
         step += dir;
         steps[step].classList.add("active");
@@ -230,70 +127,59 @@
         document.getElementById("submitBtn").style.display = step === steps.length - 1 ? "block" : "none";
     }
 
-    function validate() {
-        const inputs = steps[step].querySelectorAll("input[required], select[required]");
-        for (let i of inputs) if (!i.value) { alert("Campo obrigatório!"); i.focus(); return false; }
-        return true;
-    }
-
-    // Lógica condicional: Escolaridade
-    document.querySelectorAll('input[name="hasEducation"]').forEach(radio => {
-        radio.addEventListener('change', (e) => {
+    // Lógica Condicional
+    document.querySelectorAll('input[name="hasEducation"]').forEach(r => {
+        r.addEventListener('change', e => {
             document.getElementById("educationDetails").style.display = e.target.value === "Sim" ? "block" : "none";
-        });
-    });
-
-    // Lógica condicional: Estado Civil
-    document.getElementById("maritalStatus").addEventListener("change", (e) => {
-        document.getElementById("spouseInfo").style.display = (e.target.value === "Casado(a)" || e.target.value === "União Estável") ? "block" : "none";
-    });
-
-    // Lógica condicional: Histórico de Segurança
-    document.querySelectorAll(".bg-check").forEach(select => {
-        select.addEventListener("change", () => {
-            let anyYes = Array.from(document.querySelectorAll(".bg-check")).some(s => s.value === "Sim");
-            document.getElementById("bgDetails").style.display = anyYes ? "block" : "none";
         });
     });
 
     window.finalize = async () => {
         const btn = document.getElementById("submitBtn");
         btn.disabled = true;
-        btn.textContent = "Gerando PDF...";
+        btn.textContent = "Processando Arquivos...";
         
         try {
             const form = document.getElementById("imm5257Form");
             const fd = new FormData(form);
             const data = Object.fromEntries(fd.entries());
-            
+            const timestamp = Date.now();
+            const baseName = `${data.lastName}_${data.firstName}_${timestamp}`;
+
+            // 1. GERAR PDF DE RESUMO (Visual)
             const doc = new jsPDF();
-            doc.setFontSize(16);
-            doc.text("Coleta de Dados IMM 5257 - Objetivo Turismo", 20, 20);
-            doc.setFontSize(10);
-            
-            let y = 35;
-            for (let [key, val] of Object.entries(data)) {
-                if (y > 270) { doc.addPage(); y = 20; }
-                doc.setFont(undefined, 'bold');
-                doc.text(`${key}:`, 20, y);
-                doc.setFont(undefined, 'normal');
-                doc.text(`${val}`, 70, y);
+            doc.text("Resumo de Dados - Objetivo Turismo", 20, 20);
+            let y = 30;
+            for (let [k, v] of Object.entries(data)) {
+                doc.text(`${k}: ${v}`, 20, y);
                 y += 7;
             }
+            const pdfBlob = doc.output('blob');
 
-            const blob = doc.output('blob');
-            const fileName = `IMM5257_${data.lastName}_${Date.now()}.pdf`;
+            // 2. GERAR TXT PARA O SCRIPT (Injeção de Dados)
+            let txtContent = "";
+            for (let [k, v] of Object.entries(data)) {
+                txtContent += `${k}=${v}\n`;
+            }
+            const txtBlob = new Blob([txtContent], { type: 'text/plain' });
+
+            // 3. UPLOAD PARA FIREBASE STORAGE
+            const pdfRef = ref(storage, `pdfs/${baseName}.pdf`);
+            const txtRef = ref(storage, `scripts_txt/${baseName}.txt`);
+
+            await uploadBytes(pdfRef, pdfBlob);
+            await uploadBytes(txtRef, txtBlob);
             
-            // CORREÇÃO: Mantido em 'pdfs/' para sucesso no upload
-            const sRef = ref(storage, `pdfs/${fileName}`);
-            
-            await uploadBytes(sRef, blob);
-            const url = await getDownloadURL(sRef);
-            
-            const msg = `Olá Objetivo Turismo, meu formulário IMM 5257 está pronto: ${url}`;
+            const pdfUrl = await getDownloadURL(pdfRef);
+            const txtUrl = await getDownloadURL(txtRef);
+
+            // 4. NOTIFICAÇÃO WHATSAPP
+            const msg = `Visto Canadá - Novo Cliente: ${data.lastName}\n\nPDF Resumo: ${pdfUrl}\nTXT p/ Script: ${txtUrl}`;
             window.open(`https://api.whatsapp.com/send?phone=5561999998165&text=${encodeURIComponent(msg)}`);
+
+            alert("Sucesso! Os arquivos foram armazenados e enviados.");
         } catch (e) {
-            alert("Erro ao enviar: " + e.message);
+            alert("Erro: " + e.message);
         } finally {
             btn.disabled = false;
             btn.textContent = "Finalizar e Enviar";
