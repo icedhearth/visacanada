@@ -6,81 +6,73 @@
     <title>IMM 5257 Completo | Objetivo Turismo</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f4f7f6; margin: 0; padding: 10px; color: #2c3e50; }
-        .container { max-width: 900px; margin: 10px auto; background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h1 { color: #c0392b; border-bottom: 2px solid #c0392b; padding-bottom: 10px; text-align: center; }
-        h2 { background: #ecf0f1; padding: 10px; border-radius: 4px; color: #2980b9; font-size: 1.2rem; margin-top: 30px; }
+        body { font-family: sans-serif; background: #f4f7f6; padding: 10px; color: #2c3e50; }
+        .container { max-width: 900px; margin: auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { color: #c0392b; border-bottom: 2px solid #c0392b; text-align: center; }
+        h2 { background: #ecf0f1; padding: 10px; border-radius: 4px; color: #2980b9; font-size: 1.1rem; margin-top: 25px; }
         .form-section { display: none; }
-        .form-section.active { display: block; animation: fadeIn 0.4s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .progress-bar { width: 100%; height: 8px; background: #ddd; border-radius: 4px; margin: 20px 0; }
-        .progress-bar-fill { height: 100%; width: 0%; background: #c0392b; transition: width 0.3s; }
-        .form-group { margin-bottom: 20px; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 0.95rem; }
-        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #bdc3c7; border-radius: 4px; box-sizing: border-box; }
-        .radio-group { display: flex; gap: 20px; padding: 10px 0; }
-        .nav-btns { display: flex; justify-content: space-between; margin-top: 40px; }
-        button { padding: 12px 30px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .form-section.active { display: block; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .nav-btns { display: flex; justify-content: space-between; margin-top: 30px; }
+        button { padding: 10px 25px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
         #nextBtn, #submitBtn { background: #c0392b; color: white; }
-        #prevBtn { background: #95a5a6; color: white; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Solicitação de Visto (IMM 5257)</h1>
-    <div class="progress-bar"><div class="progress-bar-fill" id="progressBar"></div></div>
-
+    <h1>Solicitação IMM 5257 - Visto Canadá</h1>
     <form id="imm5257Form">
+        
         <div class="form-section active">
-            <h2>1. Informações Pessoais</h2>
-            <div class="form-group"><label>UCI (Se possuir)</label><input type="text" name="uci" placeholder="0000-0000"></div>
-            <div class="form-group"><label>Sobrenome(s)</label><input type="text" name="lastName" required></div>
-            <div class="form-group"><label>Nome(s)</label><input type="text" name="firstName" required></div>
-            <div class="form-group"><label>Data de Nascimento</label><input type="date" name="dob" required></div>
-            <div class="form-group"><label>País de Cidadania</label><input type="text" name="citizenship" value="Brasil" required></div>
+            <h2>1. Dados Pessoais e Estado Civil</h2>
+            <div class="form-group"><label>Sobrenome</label><input type="text" name="lastName" required></div>
+            <div class="form-group"><label>Nome</label><input type="text" name="firstName" required></div>
+            <div class="form-group"><label>Estado Civil</label>
+                <select name="maritalStatus" id="maritalStatus">
+                    <option value="Solteiro">Solteiro(a)</option>
+                    <option value="Casado">Casado(a)</option>
+                    <option value="UniaoEstavel">União Estável</option>
+                    <option value="Divorciado">Divorciado(a)</option>
+                    <option value="Viuvo">Viúvo(a)</option>
+                </select>
+            </div>
+            
+            <div id="spouseArea" style="display:none; background: #fff9f9; padding: 15px; border-left: 4px solid #c0392b;">
+                <div class="form-group"><label>Nome Completo do Cônjuge/Parceiro</label><input type="text" name="spouseName"></div>
+                <div class="form-group"><label>Data de Nascimento do Cônjuge</label><input type="date" name="spouseDOB"></div>
+                <div class="form-group"><label>Ocupação do Cônjuge</label><input type="text" name="spouseJob"></div>
+            </div>
         </div>
 
         <div class="form-section">
-            <h2>2. Documentos e Histórico</h2>
+            <h2>2. Detalhes da Viagem</h2>
             <div class="form-group"><label>Número do Passaporte</label><input type="text" name="passportNum" required></div>
-            <div class="form-group"><label>Validade do Passaporte</label><input type="date" name="expiryDate" required></div>
-            <div class="form-group">
-                <label>Possui Visto Americano (B1/B2) válido?</label>
-                <select name="usVisa"><option value="Não">Não</option><option value="Sim">Sim</option></select>
-            </div>
-            <div class="form-group">
-                <label>Já teve visto canadense nos últimos 10 anos?</label>
-                <select name="canVisa"><option value="Não">Não</option><option value="Sim">Sim</option></select>
-            </div>
+            <div class="form-group"><label>Data de Validade</label><input type="date" name="expiryDate" required></div>
+            <div class="form-group"><label>Fundos para Estadia (CAD$)</label><input type="number" name="funds" placeholder="Ex: 5000"></div>
+            <div class="form-group"><label>Pessoa/Instituição que visitará no Canadá</label><textarea name="canContact"></textarea></div>
         </div>
 
         <div class="form-section">
-            <h2>3. Detalhes da Visita ao Canadá</h2>
-            <div class="form-group"><label>Propósito da Viagem</label>
-                <select name="travelPurpose"><option>Turismo</option><option>Negócios</option><option>Visita Familiar</option></select>
+            <h2>3. Histórico de Trabalho (10 anos)</h2>
+            <div class="form-group">
+                <label>Emprego Atual</label>
+                <input type="text" name="job1_title" placeholder="Cargo e Empresa">
+                <label>Início</label><input type="month" name="job1_from">
             </div>
-            <div class="form-group"><label>Fundos Disponíveis (CAD$)</label><input type="number" name="funds" required></div>
-            <div class="form-group"><label>Nome e Endereço do Contato no Canadá</label>
-                <textarea name="canContact" placeholder="Hotel, Instituição ou Pessoa"></textarea>
-            </div>
-        </div>
-
-        <div class="form-section">
-            <h2>4. Histórico de Segurança</h2>
-            <div class="form-group"><label>Já teve visto negado ou foi deportado?</label>
-                <select name="bg4"><option value="Não">Não</option><option value="Sim">Sim</option></select>
-            </div>
-            <div class="form-group"><label>Já cometeu algum crime ou foi acusado?</label>
-                <select name="bg5"><option value="Não">Não</option><option value="Sim">Sim</option></select>
-            </div>
-            <div class="form-group"><label>Explicação (Se respondeu Sim)</label>
-                <textarea name="bgExplanation"></textarea>
+            <div class="form-group">
+                <label>Emprego Anterior</label>
+                <input type="text" name="job2_title">
+                <div style="display:flex; gap:10px;">
+                    <input type="month" name="job2_from"> em <input type="month" name="job2_to">
+                </div>
             </div>
         </div>
 
         <div class="nav-btns">
-            <button type="button" id="prevBtn" onclick="move(-1)">Anterior</button>
+            <button type="button" id="prevBtn" style="display:none" onclick="move(-1)">Anterior</button>
             <button type="button" id="nextBtn" onclick="move(1)">Próximo</button>
             <button type="button" id="submitBtn" style="display:none" onclick="finalize()">Finalizar e Enviar</button>
         </div>
@@ -106,13 +98,17 @@
 
     let step = 0;
     const steps = document.querySelectorAll(".form-section");
-    const progress = document.getElementById("progressBar");
+
+    // Lógica Cônjuge
+    document.getElementById('maritalStatus').addEventListener('change', (e) => {
+        const isMarried = (e.target.value === 'Casado' || e.target.value === 'UniaoEstavel');
+        document.getElementById('spouseArea').style.display = isMarried ? 'block' : 'none';
+    });
 
     window.move = (dir) => {
         steps[step].classList.remove("active");
         step += dir;
         steps[step].classList.add("active");
-        progress.style.width = ((step / (steps.length - 1)) * 100) + "%";
         document.getElementById("prevBtn").style.display = step === 0 ? "none" : "block";
         document.getElementById("nextBtn").style.display = step === steps.length - 1 ? "none" : "block";
         document.getElementById("submitBtn").style.display = step === steps.length - 1 ? "block" : "none";
@@ -120,44 +116,45 @@
 
     window.finalize = async () => {
         const btn = document.getElementById("submitBtn");
-        btn.disabled = true;
-        btn.textContent = "Processando...";
+        btn.disabled = true; btn.textContent = "Salvando arquivos...";
         
         try {
             const form = document.getElementById("imm5257Form");
             const fd = new FormData(form);
             const data = Object.fromEntries(fd.entries());
             const timestamp = Date.now();
-            const fileName = `${data.lastName}_${timestamp}`;
+            const baseFileName = `${data.lastName}_${timestamp}`;
 
-            // 1. Gerar PDF de Resumo
+            // 1. PDF de Resumo
             const doc = new jsPDF();
-            doc.text("Coleta de Dados IMM 5257 - Objetivo Turismo", 20, 20);
+            doc.text("Resumo de Dados - IMM 5257", 20, 20);
             let y = 30;
-            for (let [k, v] of Object.entries(data)) {
-                doc.text(`${k}: ${v}`, 20, y); y += 7;
+            for (let [k,v] of Object.entries(data)) { 
+                doc.text(`${k}: ${v}`, 20, y); y += 7; 
+                if(y > 280) { doc.addPage(); y = 20; }
             }
             const pdfBlob = doc.output('blob');
 
-            // 2. Gerar TXT para Injeção (PowerShell)
+            // 2. TXT para Script (PowerShell)
             let txtContent = "";
-            for (let [k, v] of Object.entries(data)) { txtContent += `${k}=${v}\n`; }
+            for (let [k,v] of Object.entries(data)) { txtContent += `${k}=${v}\n`; }
             const txtBlob = new Blob([txtContent], { type: 'text/plain' });
 
-            // 3. Upload Firebase
-            const pdfRef = ref(storage, `pdfs/${fileName}.pdf`);
-            const txtRef = ref(storage, `scripts_txt/${fileName}.txt`);
+            // 3. Upload na MESMA PASTA 'pdfs/'
+            const pdfRef = ref(storage, `pdfs/${baseFileName}.pdf`);
+            const txtRef = ref(storage, `pdfs/${baseFileName}.txt`);
+
             await uploadBytes(pdfRef, pdfBlob);
             await uploadBytes(txtRef, txtBlob);
             
             const pdfUrl = await getDownloadURL(pdfRef);
             const txtUrl = await getDownloadURL(txtRef);
 
-            // 4. WhatsApp
-            const msg = `Novo Visto: ${data.lastName}\nResumo: ${pdfUrl}\nArquivo Script: ${txtUrl}`;
+            const msg = `Visto Canadá - Cliente: ${data.lastName}\n\nPDF Resumo: ${pdfUrl}\nTXT p/ Script: ${txtUrl}`;
             window.open(`https://api.whatsapp.com/send?phone=5561999998165&text=${encodeURIComponent(msg)}`);
-        } catch (e) { alert("Erro: " + e.message); }
-        finally { btn.disabled = false; btn.textContent = "Finalizar"; }
+
+        } catch (e) { alert("Erro ao salvar: " + e.message); }
+        finally { btn.disabled = false; btn.textContent = "Finalizar e Enviar"; }
     };
 </script>
 </body>
