@@ -69,6 +69,15 @@ function toggleBg() {
     document.getElementById("bgBox").classList.toggle("hidden", ![...document.querySelectorAll(".bg")].some((el) => el.value === "Sim"));
 }
 
+function toggleEducation() {
+    const checked = form.querySelector('input[name="hasEducation"]:checked');
+    const show = !!checked && checked.value === "Sim";
+    document.getElementById("eduBox").classList.toggle("hidden", !show);
+    form.querySelectorAll("[data-edu-required='1']").forEach((field) => {
+        field.required = show;
+    });
+}
+
 function setStatus(type, msg) {
     statusBox.className = `status ${type}`;
     statusBox.textContent = msg;
@@ -227,9 +236,10 @@ function mapped() {
         eduSchool: clean(r.eduSchool),
         eduField: clean(r.eduField),
         eduCity: clean(r.eduCity),
-        eduCountry: tCountry(r.homeCountry),
+        eduCountry: tCountry(r.eduCountryInput || r.homeCountry),
         eduFrom: clean(r.eduFrom),
         eduTo: clean(r.eduTo),
+        eduProvince: clean(r.eduProvince),
         bg1: mapYesNo(r.bg1),
         bg2: mapYesNo(r.bg2),
         bg3: mapYesNo(r.bg3),
@@ -250,7 +260,7 @@ function buildTxt() {
         ["# ResidenceAndFamily", ["hadPreviousResidence", "prevCountry1", "prevStatus1", "prevFrom1", "prevTo1", "prevCountry2", "prevStatus2", "prevFrom2", "prevTo2", "nativeLang", "canCommunicate", "maritalStatus", "marriageDate", "spouseLastName", "spouseFirstName", "spouseDob", "hadPreviousMarriage", "previousSpouseName", "previousMarriageType", "previousMarriageFrom", "previousMarriageTo"]],
         ["# DocumentsAndContact", ["passportNum", "passportCountry", "issueDate", "expiryDate", "nationalIdHas", "nationalIdNumber", "nationalIdCountry", "nationalIdIssueDate", "nationalIdExpiryDate", "usVisa", "canVisa", "usPermanentResident", "usPrNumber", "homeAddress1", "homeApt", "homeStreetNum", "homeStreetName", "homeCity", "homeState", "homeProvince", "homePostalCode", "homeCountry", "mailingSameAsHome", "mailAddress1", "mailApt", "mailStreetNum", "mailStreetName", "mailCity", "mailState", "mailProvince", "mailPostalCode", "mailCountry", "email", "phoneType", "phoneCountryCode", "phoneNumber"]],
         ["# Visit", ["travelPurpose", "travelFrom", "travelTo", "funds", "payerTrip", "travelCompanion", "canContactName", "canContactRelationship", "canContactAddress", "canContactPhone", "intendedProvince", "itinerary", "travelPurposeOther"]],
-        ["# WorkAndEducation", ["job1_title", "job1_company", "job1_city", "job1_country", "job1_from", "job1_to", "job2_title", "job2_company", "job2_city", "job2_country", "job2_from", "job2_to", "job3_title", "job3_company", "job3_city", "job3_country", "job3_from", "job3_to", "job4_title", "job4_company", "job4_city", "job4_country", "job4_from", "job4_to", "hasEducation", "eduLevel", "eduSchool", "eduField", "eduCity", "eduCountry", "eduFrom", "eduTo"]],
+        ["# WorkAndEducation", ["job1_title", "job1_company", "job1_city", "job1_country", "job1_from", "job1_to", "job2_title", "job2_company", "job2_city", "job2_country", "job2_from", "job2_to", "job3_title", "job3_company", "job3_city", "job3_country", "job3_from", "job3_to", "job4_title", "job4_company", "job4_city", "job4_country", "job4_from", "job4_to", "hasEducation", "eduLevel", "eduSchool", "eduField", "eduCity", "eduProvince", "eduCountry", "eduFrom", "eduTo"]],
         ["# Background", ["bg1", "bg2", "bg3", "bg4", "bg5", "bg6", "bg7", "bg8", "bgExplanation"]]
     ];
     const out = [];
@@ -316,7 +326,7 @@ function generatePdfBlob() {
     [line("Proposito principal", clean(r.travelPurpose)), line("Chegada prevista", formatDateBr(d.travelFrom)), line("Saida prevista", formatDateBr(d.travelTo)), line("Fundos disponiveis (CAD)", d.funds), line("Quem paga a viagem", d.payerTrip), line("Acompanhantes", d.travelCompanion), line("Contato no Canada", d.canContactName), line("Relacao com o contato", d.canContactRelationship), line("Endereco do contato", d.canContactAddress), line("Telefone do contato", d.canContactPhone), line("Provincia / cidade principal", d.intendedProvince), line("Roteiro resumido", d.itinerary), line("Detalhes adicionais", d.travelPurposeOther)].forEach((item) => addPdfText(doc, state, item));
 
     addPdfSection(doc, state, "Trabalho e estudos");
-    [line("Cargo atual", d.job1_title), line("Empresa atual", d.job1_company), line("Cidade / pais atual", d.job1_city), line("Inicio atual", d.job1_from), line("Historico 1", `${d.job2_title} | ${d.job2_company} | ${d.job2_city} | ${d.job2_from} a ${d.job2_to}`), line("Historico 2", `${d.job3_title} | ${d.job3_company} | ${d.job3_city} | ${d.job3_from} a ${d.job3_to}`), line("Historico 3", `${d.job4_title} | ${d.job4_company} | ${d.job4_city} | ${d.job4_from} a ${d.job4_to}`), line("Estudo pos-secundario", d.hasEducation === "Yes" ? "Sim" : "Nao"), line("Nivel mais alto", d.eduLevel), line("Instituicao", d.eduSchool), line("Curso / area", d.eduField), line("Cidade e pais", d.eduCity), line("Periodo de estudo", `${d.eduFrom} a ${d.eduTo}`)].forEach((item) => addPdfText(doc, state, item));
+    [line("Cargo atual", d.job1_title), line("Empresa atual", d.job1_company), line("Cidade / pais atual", d.job1_city), line("Inicio atual", d.job1_from), line("Historico 1", `${d.job2_title} | ${d.job2_company} | ${d.job2_city} | ${d.job2_from} a ${d.job2_to}`), line("Historico 2", `${d.job3_title} | ${d.job3_company} | ${d.job3_city} | ${d.job3_from} a ${d.job3_to}`), line("Historico 3", `${d.job4_title} | ${d.job4_company} | ${d.job4_city} | ${d.job4_from} a ${d.job4_to}`), line("Estudo apos o ensino medio", d.hasEducation === "Yes" ? "Sim" : "Nao"), line("Nivel mais alto", d.eduLevel), line("Instituicao", d.eduSchool), line("Curso / area", d.eduField), line("Cidade", d.eduCity), line("Estado / provincia", d.eduProvince), line("Pais", d.eduCountry), line("Periodo de estudo", `${d.eduFrom} a ${d.eduTo}`)].forEach((item) => addPdfText(doc, state, item));
 
     addPdfSection(doc, state, "Seguranca e antecedentes");
     [line("Tuberculose ou contato proximo", clean(r.bg1)), line("Condicao medica ou mental relevante", clean(r.bg2)), line("Excedeu permanencia ou trabalhou sem permissao", clean(r.bg3)), line("Visto negado ou entrada recusada", clean(r.bg4)), line("Prisao, acusacao ou condenacao", clean(r.bg5)), line("Servico militar ou policial", clean(r.bg6)), line("Grupo associado a violencia", clean(r.bg7)), line("Abuso contra civis ou prisioneiros", clean(r.bg8)), line("Detalhes", d.bgExplanation)].forEach((item) => addPdfText(doc, state, item));
@@ -372,7 +382,7 @@ async function handleSubmit(event) {
         toggleByRadio("hadPreviousMarriage", "previousMarriageBox");
         toggleByRadio("nationalIdHas", "idBox");
         toggleByRadio("mailingSameAsHome", "mailBox", "Nao");
-        toggleByRadio("hasEducation", "eduBox");
+        toggleEducation();
         toggleSpouse();
         toggleBg();
     } catch (error) {
@@ -399,7 +409,7 @@ clearBtn.addEventListener("click", () => {
     toggleByRadio("hadPreviousMarriage", "previousMarriageBox");
     toggleByRadio("nationalIdHas", "idBox");
     toggleByRadio("mailingSameAsHome", "mailBox", "Nao");
-    toggleByRadio("hasEducation", "eduBox");
+    toggleEducation();
     toggleSpouse();
     toggleBg();
 });
@@ -410,7 +420,7 @@ form.querySelectorAll('input[name="hadPreviousResidence"]').forEach((el) => el.a
 form.querySelectorAll('input[name="hadPreviousMarriage"]').forEach((el) => el.addEventListener("change", () => toggleByRadio("hadPreviousMarriage", "previousMarriageBox")));
 form.querySelectorAll('input[name="nationalIdHas"]').forEach((el) => el.addEventListener("change", () => toggleByRadio("nationalIdHas", "idBox")));
 form.querySelectorAll('input[name="mailingSameAsHome"]').forEach((el) => el.addEventListener("change", () => toggleByRadio("mailingSameAsHome", "mailBox", "Nao")));
-form.querySelectorAll('input[name="hasEducation"]').forEach((el) => el.addEventListener("change", () => toggleByRadio("hasEducation", "eduBox")));
+form.querySelectorAll('input[name="hasEducation"]').forEach((el) => el.addEventListener("change", toggleEducation));
 document.getElementById("maritalStatus").addEventListener("change", toggleSpouse);
 document.querySelectorAll(".bg").forEach((el) => el.addEventListener("change", toggleBg));
 form.querySelectorAll('input[name="firstName"], input[name="lastName"]').forEach((el) => el.addEventListener("input", () => {
@@ -428,6 +438,6 @@ toggleByRadio("hadPreviousResidence", "residenceBox");
 toggleByRadio("hadPreviousMarriage", "previousMarriageBox");
 toggleByRadio("nationalIdHas", "idBox");
 toggleByRadio("mailingSameAsHome", "mailBox", "Nao");
-toggleByRadio("hasEducation", "eduBox");
+toggleEducation();
 toggleSpouse();
 toggleBg();
