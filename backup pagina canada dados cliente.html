@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Visto Canadense</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        :root{--bg:#f5efe6;--card:#fffdf8;--ink:#2b2119;--muted:#6d6156;--line:#d9c7b5;--accent:#0f766e;--accent2:#c26711;--soft:#eef7f5}
+        *{box-sizing:border-box}
+        body{margin:0;padding:20px;background:linear-gradient(180deg,#f1e7d9,#f7f3eb);color:var(--ink);font:15px/1.45 "Segoe UI",sans-serif}
+        .hero{max-width:1100px;margin:0 auto 18px;padding:24px;border-radius:22px;background:linear-gradient(135deg,#0f766e,#14532d);color:#f7fffd}
+        .hero p{margin:8px 0 0;color:#e2f6f3}
+        .wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1.3fr) 340px;gap:18px}
+        .card,.side{background:var(--card);border:1px solid #eadbcc;border-radius:20px;box-shadow:0 14px 34px rgba(49,33,14,.08)}
+        .card{padding:24px}.side{padding:20px;position:sticky;top:16px;height:fit-content}
+        h1,h2,h3{font-family:Georgia,serif;margin:0 0 10px}h1{font-size:2.1rem}h2{font-size:1.28rem;margin-top:24px}h3{font-size:1.1rem;margin-top:0}
+        p.note{margin:0 0 14px;color:var(--muted)}
+        .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+        .field{margin-bottom:14px}.full{grid-column:1/-1}
+        label{display:block;font-weight:700;margin-bottom:6px}.hint{font-size:.82rem;color:var(--muted)}
+        input,select,textarea{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:12px;background:#fffdfa;color:var(--ink)}
+        textarea{min-height:90px;resize:vertical}
+        .choice{display:flex;flex-wrap:wrap;gap:10px}.choice label{display:inline-flex;gap:8px;align-items:center;border:1px solid var(--line);padding:9px 12px;border-radius:999px;font-weight:600}
+        .box{margin:12px 0 16px;padding:14px;border:1px dashed #89b8b2;background:#f4fbfa;border-radius:14px}
+        .declaration{margin-top:22px;padding:18px;border:1px solid #cfe3de;background:var(--soft);border-radius:16px}
+        .declaration ol{margin:10px 0 14px;padding-left:20px;color:#3c342c}.declaration li{margin-bottom:8px}
+        .status{display:none;margin-bottom:14px;padding:12px;border-radius:12px;border:1px solid transparent}.status.error{display:block;background:#fff1f1;color:#a61b1b;border-color:#f1c9c9}.status.success{display:block;background:#eefaf4;color:#12633b;border-color:#bfe5cf}
+        .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}button{border:0;border-radius:999px;padding:12px 18px;font-weight:700;cursor:pointer}.primary{background:linear-gradient(135deg,var(--accent2),#da7a1b);color:#fff}.secondary{background:linear-gradient(135deg,var(--accent),#0d9488);color:#fff}
+        .summary{padding:14px;border-radius:14px;background:#f6efe5;border:1px solid #eadbcc}.summary ul{padding-left:18px;margin:0;color:var(--muted)}.summary li{margin-bottom:8px}
+        .hidden{display:none}.saving{opacity:.75;pointer-events:none}
+        @media (max-width:980px){.wrap{grid-template-columns:1fr}.side{position:static}}@media (max-width:760px){body{padding:12px}.grid,.grid3,.grid4{grid-template-columns:1fr}}
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>Formulario de Visto Canadense</h1>
+    </div>
+    <div class="wrap">
+        <main class="card">
+            <div class="status" id="statusBox"></div>
+            <form id="immForm">
+                <h2>1. Dados pessoais</h2>
+                <div class="grid">
+                    <div class="field"><label>UCI / Client ID</label><input name="uci" type="text" placeholder="Se tiver"></div>
+                    <div class="field"><label>Tipo de solicitacao</label><select name="applicationType"><option value="Temporary Resident Visa">Visto de visitante</option><option value="Super Visa">Super Visa</option><option value="Transit Visa">Transito</option><option value="Other">Outro</option></select></div>
+                    <div class="field"><label>Sobrenome(s)</label><input name="lastName" type="text" required></div>
+                    <div class="field"><label>Nome(s)</label><input name="firstName" type="text" required></div>
+                </div>
+                <div class="field"><label>Ja usou outros nomes?</label><div class="choice"><label><input type="radio" name="alias" value="Sim"> Sim</label><label><input type="radio" name="alias" value="Nao" checked> Nao</label></div></div>
+                <div class="box hidden" id="aliasBox"><div class="grid"><div class="field"><label>Outro sobrenome</label><input name="aliasLastName" type="text"></div><div class="field"><label>Outro nome</label><input name="aliasFirstName" type="text"></div></div></div>
+                <div class="grid4">
+                    <div class="field"><label>Sexo</label><select name="gender"><option>Masculino</option><option>Feminino</option><option>Outro</option></select></div>
+                    <div class="field"><label>Data de nascimento</label><input name="dob" type="date" required></div>
+                    <div class="field"><label>Cidade de nascimento</label><input name="birthCity" type="text" required></div>
+                    <div class="field"><label>Pais de nascimento</label><input name="birthCountry" type="text" value="Brasil" required></div>
+                </div>
+                <div class="grid3">
+                    <div class="field"><label>Pais de cidadania</label><input name="citizenship" type="text" value="Brasil" required></div>
+                    <div class="field"><label>Pais de residencia atual</label><input name="currentResidenceCountry" type="text" value="Brasil" required></div>
+                    <div class="field"><label>Status no pais de residencia</label><select name="currentResidenceStatus"><option>Cidadao</option><option>Residente permanente</option><option>Visitante</option><option>Trabalhador</option><option>Estudante</option><option>Outro</option></select></div>
+                </div>
+                <div class="grid">
+                    <div class="field"><label>Reside nesse pais desde</label><input name="currentResidenceFrom" type="month"></div>
+                    <div class="field"><label>Outra nacionalidade ou residencia permanente</label><input name="nationalityExtra" type="text"></div>
+                </div>
+                <h2>2. Residencia, idioma e familia</h2>
+                <div class="field"><label>Morou em outro pais nos ultimos 5 anos?</label><div class="choice"><label><input type="radio" name="hadPreviousResidence" value="Sim"> Sim</label><label><input type="radio" name="hadPreviousResidence" value="Nao" checked> Nao</label></div></div>
+                <div class="box hidden" id="residenceBox"><div class="grid4"><div class="field"><label>Pais anterior 1</label><input name="prevCountry1" type="text"></div><div class="field"><label>Status 1</label><select name="prevStatus1"><option value=""></option><option>Cidadao</option><option>Residente permanente</option><option>Visitante</option><option>Trabalhador</option><option>Estudante</option><option>Outro</option></select></div><div class="field"><label>De 1</label><input name="prevFrom1" type="month"></div><div class="field"><label>Ate 1</label><input name="prevTo1" type="month"></div><div class="field"><label>Pais anterior 2</label><input name="prevCountry2" type="text"></div><div class="field"><label>Status 2</label><select name="prevStatus2"><option value=""></option><option>Cidadao</option><option>Residente permanente</option><option>Visitante</option><option>Trabalhador</option><option>Estudante</option><option>Outro</option></select></div><div class="field"><label>De 2</label><input name="prevFrom2" type="month"></div><div class="field"><label>Ate 2</label><input name="prevTo2" type="month"></div></div></div>
+                <div class="grid">
+                    <div class="field"><label>Lingua nativa</label><input name="nativeLang" type="text" value="Portugues" required></div>
+                    <div class="field"><label>Consegue se comunicar em ingles ou frances?</label><select name="canCommunicate"><option>Nenhum</option><option>Ingles</option><option>Frances</option><option>Ambos</option></select></div>
+                    <div class="field"><label>Estado civil</label><select id="maritalStatus" name="maritalStatus"><option>Solteiro(a)</option><option>Casado(a)</option><option>Uniao estavel</option><option>Divorciado(a)</option><option>Viuvo(a)</option><option>Separado(a) legalmente</option><option>Casamento anulado</option></select></div>
+                    <div class="field"><label>Data da uniao/casamento</label><input name="marriageDate" type="date"></div>
+                </div>
+                <div class="box hidden" id="spouseBox"><div class="grid3"><div class="field"><label>Sobrenome do conjuge</label><input name="spouseLastName" type="text"></div><div class="field"><label>Nome do conjuge</label><input name="spouseFirstName" type="text"></div><div class="field"><label>Nascimento do conjuge</label><input name="spouseDob" type="date"></div></div></div>
+                <div class="field"><label>Ja teve casamento ou uniao anterior?</label><div class="choice"><label><input type="radio" name="hadPreviousMarriage" value="Sim"> Sim</label><label><input type="radio" name="hadPreviousMarriage" value="Nao" checked> Nao</label></div></div>
+                <div class="box hidden" id="previousMarriageBox"><div class="grid"><div class="field"><label>Nome do ex-conjuge</label><input name="previousSpouseName" type="text"></div><div class="field"><label>Tipo de relacao anterior</label><select name="previousMarriageType"><option value=""></option><option>Casamento</option><option>Uniao estavel</option></select></div><div class="field"><label>Inicio</label><input name="previousMarriageFrom" type="date"></div><div class="field"><label>Fim</label><input name="previousMarriageTo" type="date"></div></div></div>
+                <h2>3. Passaporte, identidade e contato</h2>
+                <div class="grid4">
+                    <div class="field"><label>Numero do passaporte</label><input name="passportNum" type="text" required></div>
+                    <div class="field"><label>Pais de emissao</label><input name="passportCountry" type="text" value="Brasil" required></div>
+                    <div class="field"><label>Data de emissao</label><input name="issueDate" type="date" required></div>
+                    <div class="field"><label>Data de validade</label><input name="expiryDate" type="date" required></div>
+                </div>
+                <div class="field"><label>Possui documento nacional de identidade?</label><div class="choice"><label><input type="radio" name="nationalIdHas" value="Sim"> Sim</label><label><input type="radio" name="nationalIdHas" value="Nao" checked> Nao</label></div><div class="hint">Para brasileiros, normalmente use o RG quando aplicavel.</div></div>
+                <div class="box hidden" id="idBox"><div class="grid4"><div class="field"><label>Numero do documento</label><input name="nationalIdNumber" type="text"></div><div class="field"><label>Pais</label><input name="nationalIdCountry" type="text" value="Brasil"></div><div class="field"><label>Emissao</label><input name="nationalIdIssueDate" type="date"></div><div class="field"><label>Validade</label><input name="nationalIdExpiryDate" type="date"></div></div></div>
+                <div class="grid">
+                    <div class="field"><label>Possui visto americano valido?</label><div class="choice"><label><input type="radio" name="usVisa" value="Sim"> Sim</label><label><input type="radio" name="usVisa" value="Nao" checked> Nao</label></div></div>
+                    <div class="field"><label>Ja teve visto canadense nos ultimos 10 anos?</label><div class="choice"><label><input type="radio" name="canVisa" value="Sim"> Sim</label><label><input type="radio" name="canVisa" value="Nao" checked> Nao</label></div></div>
+                    <div class="field"><label>Possui Green Card ou residencia permanente nos EUA?</label><div class="choice"><label><input type="radio" name="usPermanentResident" value="Sim"> Sim</label><label><input type="radio" name="usPermanentResident" value="Nao" checked> Nao</label></div></div>
+                    <div class="field"><label>Numero / validade do status nos EUA</label><input name="usPrNumber" type="text" placeholder="Opcional"></div>
+                </div>
+                <div class="grid">
+                    <div class="field full"><label>Endereco residencial completo</label><input name="homeAddress1" type="text" placeholder="Rua, numero, complemento" required></div>
+                    <div class="field"><label>Cidade</label><input name="homeCity" type="text" required></div>
+                    <div class="field"><label>Estado / UF</label><input name="homeState" type="text" required></div>
+                    <div class="field"><label>CEP</label><input name="homePostalCode" type="text" required></div>
+                    <div class="field"><label>Pais</label><input name="homeCountry" type="text" value="Brasil" required></div>
+                    <div class="field"><label>E-mail</label><input name="email" type="email" required></div>
+                    <div class="field"><label>Tipo do telefone</label><select name="phoneType"><option>Celular</option><option>Residencial</option><option>Comercial</option></select></div>
+                    <div class="field"><label>Codigo do pais</label><input name="phoneCountryCode" type="text" value="+55"></div>
+                    <div class="field"><label>Numero</label><input name="phoneNumber" type="text" required></div>
+                </div>
+                <div class="field"><label>Endereco para correspondencia e o mesmo?</label><div class="choice"><label><input type="radio" name="mailingSameAsHome" value="Sim" checked> Sim</label><label><input type="radio" name="mailingSameAsHome" value="Nao"> Nao</label></div></div>
+                <div class="box hidden" id="mailBox"><div class="grid"><div class="field full"><label>Endereco de correspondencia</label><input name="mailAddress1" type="text"></div><div class="field"><label>Cidade</label><input name="mailCity" type="text"></div><div class="field"><label>Estado / UF</label><input name="mailState" type="text"></div><div class="field"><label>CEP</label><input name="mailPostalCode" type="text"></div><div class="field"><label>Pais</label><input name="mailCountry" type="text" value="Brasil"></div></div></div>
+                <h2>4. Viagem ao Canada</h2>
+                <div class="grid4">
+                    <div class="field"><label>Proposito principal</label><select name="travelPurpose"><option>Turismo</option><option>Negocios</option><option>Visita a familiares</option><option>Transito</option><option>Outro</option></select></div>
+                    <div class="field"><label>Chegada prevista</label><input name="travelFrom" type="date" required></div>
+                    <div class="field"><label>Saida prevista</label><input name="travelTo" type="date" required></div>
+                    <div class="field"><label>Fundos disponiveis (CAD)</label><input name="funds" type="number" min="0" required></div>
+                </div>
+                <div class="grid">
+                    <div class="field"><label>Quem paga a viagem?</label><input name="payerTrip" type="text"></div>
+                    <div class="field"><label>Vai viajar com alguem?</label><input name="travelCompanion" type="text"></div>
+                    <div class="field"><label>Contato no Canada</label><input name="canContactName" type="text"></div>
+                    <div class="field"><label>Relacao com o contato</label><input name="canContactRelationship" type="text"></div>
+                    <div class="field full"><label>Endereco do contato no Canada</label><input name="canContactAddress" type="text"></div>
+                    <div class="field"><label>Telefone do contato</label><input name="canContactPhone" type="text"></div>
+                    <div class="field"><label>Provincia / cidade principal</label><input name="intendedProvince" type="text"></div>
+                </div>
+                <div class="field"><label>Roteiro resumido</label><textarea name="itinerary"></textarea></div>
+                <div class="field"><label>Se marcou "Outro", explique</label><textarea name="travelPurposeOther"></textarea></div>
+
+                <h2>5. Trabalho e estudos</h2>
+                <div class="grid4">
+                    <div class="field"><label>Cargo atual</label><input name="job1_title" type="text" required></div>
+                    <div class="field"><label>Empresa atual</label><input name="job1_company" type="text" required></div>
+                    <div class="field"><label>Cidade / pais atual</label><input name="job1_city" type="text" required></div>
+                    <div class="field"><label>Inicio atual</label><input name="job1_from" type="month" required></div>
+                    <div class="field"><label>Cargo anterior 1</label><input name="job2_title" type="text"></div>
+                    <div class="field"><label>Empresa anterior 1</label><input name="job2_company" type="text"></div>
+                    <div class="field"><label>Cidade / pais anterior 1</label><input name="job2_city" type="text"></div>
+                    <div class="field"><label>De 1</label><input name="job2_from" type="month"></div>
+                    <div class="field"><label>Ate 1</label><input name="job2_to" type="month"></div>
+                    <div class="field"><label>Cargo anterior 2</label><input name="job3_title" type="text"></div>
+                    <div class="field"><label>Empresa anterior 2</label><input name="job3_company" type="text"></div>
+                    <div class="field"><label>Cidade / pais anterior 2</label><input name="job3_city" type="text"></div>
+                    <div class="field"><label>De 2</label><input name="job3_from" type="month"></div>
+                    <div class="field"><label>Ate 2</label><input name="job3_to" type="month"></div>
+                    <div class="field"><label>Cargo anterior 3</label><input name="job4_title" type="text"></div>
+                    <div class="field"><label>Empresa anterior 3</label><input name="job4_company" type="text"></div>
+                    <div class="field"><label>Cidade / pais anterior 3</label><input name="job4_city" type="text"></div>
+                    <div class="field"><label>De 3</label><input name="job4_from" type="month"></div>
+                    <div class="field"><label>Ate 3</label><input name="job4_to" type="month"></div>
+                </div>
+                <div class="field"><label>Possui estudo pos-secundario?</label><div class="choice"><label><input type="radio" name="hasEducation" value="Sim"> Sim</label><label><input type="radio" name="hasEducation" value="Nao" checked> Nao</label></div></div>
+                <div class="box hidden" id="eduBox"><div class="grid"><div class="field"><label>Nivel mais alto</label><select name="eduLevel"><option value=""></option><option>Tecnico</option><option>Tecnologo</option><option>Graduacao</option><option>Pos-graduacao</option><option>Mestrado</option><option>Doutorado</option></select></div><div class="field"><label>Instituicao</label><input name="eduSchool" type="text"></div><div class="field"><label>Curso / area</label><input name="eduField" type="text"></div><div class="field"><label>Cidade e pais</label><input name="eduCity" type="text"></div><div class="field"><label>Inicio</label><input name="eduFrom" type="month"></div><div class="field"><label>Conclusao</label><input name="eduTo" type="month"></div></div></div>
+
+                <h2>6. Seguranca e antecedentes</h2>
+                <div class="grid">
+                    <div class="field"><label>Tuberculose ou contato proximo?</label><select name="bg1" class="bg"><option>Nao</option><option>Sim</option></select></div>
+                    <div class="field"><label>Condicao medica ou mental relevante?</label><select name="bg2" class="bg"><option>Nao</option><option>Sim</option></select></div>
+                    <div class="field"><label>Excedeu permanencia ou trabalhou sem permissao no Canada?</label><select name="bg3" class="bg"><option>Nao</option><option>Sim</option></select></div>
+                    <div class="field"><label>Ja teve visto negado, entrada recusada ou ordem para sair?</label><select name="bg4" class="bg"><option>Nao</option><option>Sim</option></select></div>
+                    <div class="field"><label>Ja foi preso, acusado ou condenado?</label><select name="bg5" class="bg"><option>Nao</option><option>Sim</option></select></div>
+                    <div class="field"><label>Ja serviu em exercito, policia, milicia ou inteligencia?</label><select name="bg6" class="bg"><option>Nao</option><option>Sim</option></select></div>
+                    <div class="field"><label>Ja participou de grupo associado a violencia?</label><select name="bg7" class="bg"><option>Nao</option><option>Sim</option></select></div>
+                    <div class="field"><label>Ja testemunhou ou participou de abuso contra civis ou prisioneiros?</label><select name="bg8" class="bg"><option>Nao</option><option>Sim</option></select></div>
+                </div>
+                <div class="box hidden" id="bgBox"><div class="field"><label>Detalhes para qualquer resposta "Sim"</label><textarea name="bgExplanation" placeholder="Informe datas, paises, autoridades e resultado final."></textarea></div></div>
+
+                <div class="declaration">
+                    <h2 style="margin-top:0">7. Declaracao e autorizacao</h2>
+                    <p>Eu, <input name="declaracaoNome" type="text" style="display:inline-block;width:auto;min-width:240px" placeholder="Nome completo" required>, declaro, sob as penas da lei, que li e compreendi integralmente todas as questoes contidas nesta solicitacao de visto e afirmo que as respostas por mim fornecidas sao verdadeiras, completas e corretas, conforme o meu melhor conhecimento e conviccao.</p>
+                    <p><strong>Declaro estar ciente de que:</strong></p>
+                    <ol>
+                        <li>Qualquer declaracao falsa, incompleta ou enganosa podera resultar na recusa do visto ou em outras medidas cabiveis pelas autoridades competentes.</li>
+                        <li>Todas as informacoes prestadas nesta solicitacao sao de minha exclusiva responsabilidade e poderao ser verificadas pelas autoridades imigratorias competentes.</li>
+                        <li>Informacoes e documentos adicionais poderao ser requisitados apos a analise desta solicitacao, sendo minha responsabilidade apresenta-los tempestivamente.</li>
+                        <li>As informacoes contidas nesta solicitacao poderao ser compartilhadas com autoridades governamentais competentes para fins de verificacao, seguranca, imigracao e aplicacao da lei, nos limites da legislacao aplicavel.</li>
+                        <li>Fotografias, documentos e dados fornecidos poderao ser utilizados para verificacao de identidade e demais finalidades legais relacionadas ao processamento do pedido.</li>
+                        <li>Sou exclusivamente responsavel pela autenticidade e exatidao dos documentos apresentados e das informacoes prestadas.</li>
+                        <li>Tenho pleno conhecimento de que a concessao ou negativa do visto e prerrogativa exclusiva da Autoridade Consular e das autoridades imigratorias do Canada.</li>
+                        <li>Estou ciente de que entrevistas, biometria, exames ou documentos complementares poderao ser exigidos a criterio exclusivo das autoridades competentes.</li>
+                        <li>Reconheco que o servico contratado constitui assessoria relacionada ao preenchimento de documentacao, organizacao do processo e orientacao de tramites, nao abrangendo promessas de aprovacao do visto.</li>
+                        <li>A aposicao da minha assinatura eletronica neste documento possui validade juridica conforme a legislacao aplicavel e representa meu reconhecimento expresso dos servicos contratados.</li>
+                    </ol>
+                    <p><strong>Autorizacao:</strong> Declaro, por fim, ter revisado e conferido todos os dados por mim apresentados, autorizando expressamente a empresa <strong>Objetivo Turismo Ltda.</strong>, contratada diretamente por mim ou por intermedio de minha agencia, a proceder com o envio eletronico das informacoes necessarias ao formulario IMM 5257 e documentos correlatos, bem como a realizar os procedimentos operacionais necessarios a tramitacao do meu pedido perante as autoridades competentes.</p>
+                    <div class="grid3">
+                        <div class="field"><label>Local</label><input name="declaracaoLocal" type="text" required></div>
+                        <div class="field"><label>Data</label><input name="declaracaoData" type="date" required></div>
+                        <div class="field"><label>Aceite</label><div class="choice"><label><input type="checkbox" name="aceiteDeclaracao" required> Concordo com os termos da declaracao</label></div></div>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button type="submit" class="primary" id="submitBtn">Enviar formulario</button>
+                    <button type="button" class="secondary" id="clearBtn">Limpar campos</button>
+                </div>
+            </form>
+        </main>
+        <aside class="side">
+            <div class="summary">
+                <h3>Resumo</h3>
+                <ul>
+                    <li>Dados pessoais</li>
+                    <li>Documentos e contato</li>
+                    <li>Viagem ao Canada</li>
+                    <li>Trabalho, estudos e antecedentes</li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+    <script type="module" src="./backup_pagina_canada_dados_cliente.js"></script>
+</body>
+</html>
